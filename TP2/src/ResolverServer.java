@@ -1,4 +1,5 @@
 import java.net.*;
+import java.io.*;
 
 class ResolverServer{
     public static void main(String[] args) throws Exception {
@@ -8,6 +9,17 @@ class ResolverServer{
         // Create a socket to communicate with the client
         Socket clientSocket = serverSocket.accept();
         System.out.println("Connected to client");
+        //get the input stream from the client
+        InputStream is = clientSocket.getInputStream();
+        //create a DataInputStream so we can read data from it.
+        DataInputStream dis = new DataInputStream(is);
+        //read the message from the client
+        String message = dis.readUTF();
+        System.out.println("Message received from client: " + message);
+        //get the output stream from the client
+        OutputStream os = clientSocket.getOutputStream();
+        //create a DataOutputStream so we can write data to it.
+        DataOutputStream dos = new DataOutputStream(os);
         // Close the socket
         clientSocket.close();
         serverSocket.close();
