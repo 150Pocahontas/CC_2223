@@ -1,0 +1,8 @@
+# Configuration file for primary server for example.com
+example.com DB example-com.db
+example.com SS 193.123.5.189
+example.com SS 193.123.5.190:5353
+example.com DD 127.0.0.1
+example.com LG /var/dns/example-com.log
+all LG /var/dns/all.log
+root ST /var/dns/rootservers.db 
