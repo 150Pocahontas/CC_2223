@@ -143,9 +143,13 @@ public class DNSmessage implements Serializable {
                 ", QUERY-INFO.NAME = " + name +  
                 ", QUERY-INFO.TYPE = " + typeOfValue +
                 ",;\n#Data: list os Response, Authorities and Extra Values\n" +  
-                ", responseValue ='" + responseValue +  
-                ", authoritiesValues ='" + authoritiesValues + 
-                ", extraValues ='" + extraValues;
+                "RESPONSE-VALUES = " + responseValue +  
+                "\nAUTHORITIES-VALUES = " + authoritiesValues + 
+                "\nNEXTRA-VALUES = " + extraValues;
                 
+    }
+
+    public String toStringC(){
+        return id + "," + flags + "," + responseCode + ',' + numberOfValues + ',' + numberOfAuthorities + ',' + numberOfExtra + ',' + name + ',' + typeOfValue;
     }
 }

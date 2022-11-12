@@ -15,7 +15,7 @@ class ResolverServer{
         DataInputStream dis = new DataInputStream(is);
         //read the message from the client
         String message = dis.readUTF();
-        System.out.println("Message received from client: " + message);
+        System.out.println("Message received from client: ");
         // Close the socket
         clientSocket.close();
         serverSocket.close();
