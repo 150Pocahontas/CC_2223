@@ -1,8 +1,9 @@
 import javax.crypto.*;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.Serializable;
-import java.net.*;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 public class DNSmessage implements Serializable {
     public static final int MAX_SIZE_DATA = 1024;
@@ -20,11 +21,11 @@ public class DNSmessage implements Serializable {
     // -> 2 Campos Query Info
     private final String name;
     private final String typeOfValue;
-    private final String responseValue;
-    private final String authoritiesValues;
-    private final String extraValues;
+    private final List<String> responseValue;
+    private final List<String> authoritiesValues;
+    private final List<String> extraValues;
 
-    public DNSmessage(int id, String[] flags, int responseCode, int numberOfValues, int numberOfAuthorities, int numberOfExtra, String name, String typeOfValue, String responseValue, String authoritiesValues, String extraValues) {
+    public DNSmessage(int id, String[] flags, int responseCode, int numberOfValues, int numberOfAuthorities, int numberOfExtra, String name, String typeOfValue, List<String> responseValue, List<String> authoritiesValues, List<String> extraValues) {
         this.id = id;
         this.flags = flags;
         this.responseCode = responseCode;
@@ -41,20 +42,19 @@ public class DNSmessage implements Serializable {
     public DNSmessage(byte[] message) {
         ByteBuffer buffer = ByteBuffer.wrap(message);
         this.id = buffer.getShort();
-        this.flags = new String[4];
+        this.flags = new String[3];
         this.flags[0] = String.valueOf(buffer.getShort());
         this.flags[1] = String.valueOf(buffer.getShort());
         this.flags[2] = String.valueOf(buffer.getShort());
-        this.flags[3] = String.valueOf(buffer.getShort());
         this.responseCode = buffer.getShort();
         this.numberOfValues = buffer.getShort();
         this.numberOfAuthorities = buffer.getShort();
         this.numberOfExtra = buffer.getShort();
         this.name = new String(buffer.array(), 28, 255, StandardCharsets.UTF_8);
         this.typeOfValue = new String(buffer.array(), 283, 255, StandardCharsets.UTF_8);
-        this.responseValue = new String(buffer.array(), 538, 255, StandardCharsets.UTF_8);
-        this.authoritiesValues = new String(buffer.array(), 793, 255, StandardCharsets.UTF_8);
-        this.extraValues = new String(buffer.array(), 1048, 255, StandardCharsets.UTF_8);
+        this.responseValue = null;
+        this.authoritiesValues = null;
+        this.extraValues = null;
     }
 
     public byte[] toByteArray() {
@@ -63,16 +63,12 @@ public class DNSmessage implements Serializable {
         buffer.putShort(Short.parseShort(this.flags[0]));
         buffer.putShort(Short.parseShort(this.flags[1]));
         buffer.putShort(Short.parseShort(this.flags[2]));
-        buffer.putShort(Short.parseShort(this.flags[3]));
         buffer.putShort((short) this.responseCode);
         buffer.putShort((short) this.numberOfValues);
         buffer.putShort((short) this.numberOfAuthorities);
         buffer.putShort((short) this.numberOfExtra);
         buffer.put(this.name.getBytes(StandardCharsets.UTF_8));
         buffer.put(this.typeOfValue.getBytes(StandardCharsets.UTF_8));
-        buffer.put(this.responseValue.getBytes(StandardCharsets.UTF_8));
-        buffer.put(this.authoritiesValues.getBytes(StandardCharsets.UTF_8));
-        buffer.put(this.extraValues.getBytes(StandardCharsets.UTF_8));
         return buffer.array();
     }
 
@@ -90,6 +86,66 @@ public class DNSmessage implements Serializable {
         return new DNSmessage(cipher.doFinal(message));
     }
 
+    public int getId() {
+        return id;
+    }
 
+    public String[] getFlags() {
+        return flags;
+    }
 
+    public int getResponseCode() {
+        return responseCode;
+    }
+
+    public int getNumberOfValues() {
+        return numberOfValues;
+    }
+
+    public int getNumberOfAuthorities() {
+        return numberOfAuthorities;
+    }
+
+    public int getNumberOfExtra() {
+        return numberOfExtra;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getTypeOfValue() {
+        return typeOfValue;
+    }
+
+    public List<String> getResponseValue() {
+        return responseValue;
+    }
+
+    public List<String> getAuthoritiesValues() {
+        return authoritiesValues;
+    }
+
+    public List<String> getExtraValues() {
+        return extraValues;
+    }
+
+    @Override
+    public String toString() {
+        return "#Header\n" +
+                "MESSAGE-ID = " + id +
+                ", FLAGS = " + flags +
+                ", RESPONSE-CODE = " + responseCode +
+                ", N-VALUES = " + numberOfValues +
+                ", N-AUTHORITIES = " + numberOfAuthorities +
+                ", N-EXTRA = " + numberOfExtra +
+                ",;\n#Data: Query Info\n" +
+                ", QUERY-INFO.NAME = " + name +  
+                ", QUERY-INFO.TYPE = " + typeOfValue +
+                ",;\n#Data: list os Response, Authorities and Extra Values\n" +  
+                ", responseValue ='" + responseValue +  
+                ", authoritiesValues ='" + authoritiesValues + 
+                ", extraValues ='" + extraValues;
+                
+    }
 }
