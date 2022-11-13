@@ -3,7 +3,8 @@ import javax.crypto.spec.SecretKeySpec;
 import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
+import java.util.*;
+import java.util.stream.*;
 
 public class DNSmessage implements Serializable {
     public static final int MAX_SIZE_DATA = 1024;
@@ -60,9 +61,10 @@ public class DNSmessage implements Serializable {
     public byte[] toByteArray() {
         ByteBuffer buffer = ByteBuffer.allocate(MAX_SIZE_MESSAGE);
         buffer.putShort((short) this.id);
-        buffer.putShort(Short.parseShort(this.flags[0]));
-        buffer.putShort(Short.parseShort(this.flags[1]));
-        buffer.putShort(Short.parseShort(this.flags[2]));
+        
+        for(int i=0; i < flags.length ; i++){
+            buffer.putShort(Short.parseShort(this.flags[i]));
+        }
         buffer.putShort((short) this.responseCode);
         buffer.putShort((short) this.numberOfValues);
         buffer.putShort((short) this.numberOfAuthorities);
@@ -132,20 +134,20 @@ public class DNSmessage implements Serializable {
 
     @Override
     public String toString() {
-        return "#Header\n" +
+        return "# Header\n" +
                 "MESSAGE-ID = " + id +
-                ", FLAGS = " + flags +
+                ", FLAGS = " + Stream.of(flags).collect(Collectors.joining("+")) +
                 ", RESPONSE-CODE = " + responseCode +
                 ", N-VALUES = " + numberOfValues +
                 ", N-AUTHORITIES = " + numberOfAuthorities +
                 ", N-EXTRA = " + numberOfExtra +
-                ",;\n#Data: Query Info\n" +
-                ", QUERY-INFO.NAME = " + name +  
+                ",;\n# Data: Query Info\n" +
+                "QUERY-INFO.NAME = " + name +  
                 ", QUERY-INFO.TYPE = " + typeOfValue +
-                ",;\n#Data: list os Response, Authorities and Extra Values\n" +  
+                ",;\n# Data: list os Response, Authorities and Extra Values\n" +  
                 "RESPONSE-VALUES = " + responseValue +  
                 "\nAUTHORITIES-VALUES = " + authoritiesValues + 
-                "\nNEXTRA-VALUES = " + extraValues;
+                "\nEXTRA-VALUES = " + extraValues;
                 
     }
 
