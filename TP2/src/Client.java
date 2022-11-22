@@ -42,5 +42,4 @@ class Client{
             System.out.println("Error: " + e);
         }
     }
-
 }
