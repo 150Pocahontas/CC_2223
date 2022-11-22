@@ -1,19 +1,33 @@
+import java.net.*;
+import java.io.*;
+import java.util.*;
+
+
 //Server Primary and secundary (also SDT and ST)
 class Server{
     
-    //Database Dominio , filepath
-    ArrayList<String,String> databases = new ArrayList<String>();
-    ArrayList<InetAddress> topServers = new ArrayList<InetAddress>();
-    String 
-
-    public static main(String[] args){
-        //create a new parser
-        Parser parser = new Parser(args[1]);
-        //create a new resolver
-        Resolver resolver = new Server(parser.getDatabase(), parser.getServers(), parser.getDefault(), parser.getLogFile(), parser.getSTFile());
-        //create a new server
-        ResolverServer server = new ResolverServer(parser.getServers(), resolver);
-        //start the server
-        server.start();
+    public static void main(String[] args) throws IOException{
+        //parser
+        ParseConfigFile parser = new ParseConfigFile();
+        parser.Parse(args[1]);
+        // Create a socket to listen on port 1234
+        ServerSocket serverSocket = new ServerSocket(1234);
+        System.out.println("Listening on port 1234");
+        // Create a socket to communicate with the client
+        Socket clientSocket = serverSocket.accept();
+        System.out.println("Connected to client");
+        //get the input stream from the client
+        InputStream is = clientSocket.getInputStream();
+        //create a DataInputStream so we can read data from it.
+        DataInputStream dis = new DataInputStream(is);
+        //read the message from the client
+        String message = dis.readUTF();
+        System.out.println("Message received from client: ");
+        // Close the socket
+        clientSocket.close();
+        serverSocket.close();
     }
+
+    //contructer
+
 }

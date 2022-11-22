@@ -1,18 +1,18 @@
 import java.net.*;
+import java.util.ArrayList;
 import java.io.*;
 
 class ResolverServer{
 
     String STfile;
     String defaultServer;
-    ArrayList<InetAddress> topServers = new ArrayList<InetAddress>();
+    ArrayList<InetAddress> topServers;
     String logFile;
     
     public static void main(String[] args) throws Exception {
         //parser
-        Parser parser = new Parser(args[1]);
-        //resolver
-        Resolver resolver = new Resolver(parser.getDatabase(), parser.getServers(), parser.getDefault(), parser.getLogFile(), parser.getSTFile());
+        ParseConfigFile parser = new ParseConfigFile();
+        parser.Parse(args[1]);
         // Create a socket to listen on port 1234
         ServerSocket serverSocket = new ServerSocket(1234);
         System.out.println("Listening on port 1234");
