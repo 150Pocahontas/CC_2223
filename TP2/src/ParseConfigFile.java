@@ -3,12 +3,12 @@ import java.io.*;
 
 class ParseConfigFile{
 
-    String dbFile;
+    ArrayList<String> dbFile;
     Map<String,String> servers;
     ArrayList<String> logFile;
     String rootFile;
     
-    public void Parse(String fileName) throws IOException{
+    ParseConfigFile(String fileName) throws IOException{
         BufferedReader reader;
         try{
             reader = new BufferedReader(new FileReader(fileName));
@@ -17,7 +17,7 @@ class ParseConfigFile{
                 //if 2 word of line
                 String[] words = line.split(" ");
                 if(words[1].equals("DB")){
-                    dbFile = words[2] + ":" + words[0];
+                    dbFile.add(words[0]);
                 }else if(words[1].equals("SP") || words[1].equals("SS") || words[1].equals("DD")){
                     servers.put(words[0], words[3]);
                 }else if(words[1].equals("LG")){
@@ -32,7 +32,7 @@ class ParseConfigFile{
     }
 
     //getter
-    public String getDatabase(){
+    public ArrayList<String> getDatabase(){
         return dbFile;
     }
     public Map<String,String> getServers(){
@@ -44,5 +44,4 @@ class ParseConfigFile{
     public ArrayList<String> getrootFile(){
         return logFile;
     }
-
 }

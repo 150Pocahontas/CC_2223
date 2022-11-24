@@ -11,8 +11,8 @@ class ResolverServer{
     
     public static void main(String[] args) throws Exception {
         //parser
-        ParseConfigFile parser = new ParseConfigFile();
-        parser.Parse(args[1]);
+        //ParseConfigFile parser = new ParseConfigFile(STfile);
+        parser.Parse();
         // Create a socket to listen on port 1234
         ServerSocket serverSocket = new ServerSocket(1234);
         System.out.println("Listening on port 1234");
