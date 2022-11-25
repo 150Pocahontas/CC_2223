@@ -34,7 +34,7 @@ class Client{
             dis.read(messageReceived);
             DNSmessage response = new DNSmessage(messageReceived);
             System.out.println("Message received from server");
-            System.out.println(response);
+            //System.out.println(response);
             // Close the socket
             clientSocket.close();
         } catch (Exception e) {

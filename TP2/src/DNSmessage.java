@@ -24,11 +24,11 @@ public class DNSmessage implements Serializable {
     private final String name;
     private final String typeOfValue;
 
-    private final String responseValue;
-    private final String authoritiesValues;
-    private String extraValues;
+    private List<String> responseValue;
+    private List<String> authoritiesValues;
+    private List<String> extraValues;
 
-    public DNSmessage(int id, int[] flags, int responseCode, int numberOfValues, int numberOfAuthorities, int numberOfExtra, String name, String typeOfValue, String responseValue, String authoritiesValues, String extraValues) {
+    public DNSmessage(int id, int[] flags, int responseCode, int numberOfValues, int numberOfAuthorities, int numberOfExtra, String name, String typeOfValue,  List<String> responseValue,  List<String> authoritiesValues,  List<String> extraValues) {
         this.id = id;
         this.flags = flags;
         this.responseCode = responseCode;
@@ -42,25 +42,6 @@ public class DNSmessage implements Serializable {
         this.extraValues = extraValues;
     }
 
-    public DNSmessage(byte[] message) throws Exception {
-        byte[] arrayBytes = message;
-        this.id = ByteBuffer.wrap(Arrays.copyOfRange(arrayBytes, 0, 4)).getInt();
-        this.flags = new int[3];
-        this.flags[0] = ByteBuffer.wrap(Arrays.copyOfRange(arrayBytes, 4, 5)).get();
-        this.flags[1] = ByteBuffer.wrap(Arrays.copyOfRange(arrayBytes, 5, 6)).get();
-        this.flags[2] = ByteBuffer.wrap(Arrays.copyOfRange(arrayBytes, 6, 7)).get();
-        this.responseCode = ByteBuffer.wrap(Arrays.copyOfRange(arrayBytes, 7, 8)).get();
-        this.numberOfValues = ByteBuffer.wrap(Arrays.copyOfRange(arrayBytes, 8, 10)).get();
-        this.numberOfAuthorities = ByteBuffer.wrap(Arrays.copyOfRange(arrayBytes, 10, 12)).get();
-        this.numberOfExtra = ByteBuffer.wrap(Arrays.copyOfRange(arrayBytes, 12, 14)).get();
-        this.name = new String(Arrays.copyOfRange(arrayBytes, 14, 29), StandardCharsets.UTF_8);
-        this.typeOfValue = new String(Arrays.copyOfRange(arrayBytes, 29, 31), StandardCharsets.UTF_8);
-        this.responseValue = new String(Arrays.copyOfRange(arrayBytes, 31, 259), StandardCharsets.UTF_8);
-        this.authoritiesValues = new String(Arrays.copyOfRange(arrayBytes, 259, 518), StandardCharsets.UTF_8);
-        this.extraValues = new String(Arrays.copyOfRange(arrayBytes, 518, 1060), StandardCharsets.UTF_8);
-
-    }
-    
     //Método que transforma um dns message num array de bytes encriptado
     public byte[] toByteArray() throws Exception {
 
@@ -73,32 +54,91 @@ public class DNSmessage implements Serializable {
         flags[2] = (byte) this.flags[2];
         System.arraycopy(flags, 0, byteM, 4, 3);
         byte[] responseCode = intToByteArray(this.responseCode);
-        System.arraycopy(responseCode, 0, byteM, 7, 1);
+        System.arraycopy(responseCode, 0, byteM, 7, 4);
         byte[] numberOfValues = intToByteArray(this.numberOfValues);
-        System.arraycopy(numberOfValues, 0, byteM, 8, 2);
+        System.arraycopy(numberOfValues, 0, byteM, 11, 4);
         byte[] numberOfAuthorities = intToByteArray(this.numberOfAuthorities);
-        System.arraycopy(numberOfAuthorities, 0, byteM, 10, 2);
+        System.arraycopy(numberOfAuthorities, 0, byteM, 15, 4);
         byte[] numberOfExtra = intToByteArray(this.numberOfExtra);
-        System.arraycopy(numberOfExtra, 0, byteM, 12, 2);
+        System.arraycopy(numberOfExtra, 0, byteM, 19, 4);
         byte[] name = this.name.getBytes(StandardCharsets.UTF_8);
-        System.arraycopy(name, 0, byteM, 14, 15);
+        System.arraycopy(name, 0, byteM, 23, 11);
         byte[] typeOfValue = this.typeOfValue.getBytes(StandardCharsets.UTF_8);
-        System.arraycopy(typeOfValue, 0, byteM, 29, 2);
-
-        if(this.responseValue != null){
-            byte[] responseValue = this.responseValue.getBytes(StandardCharsets.UTF_8);
-            System.arraycopy(responseValue, 0, byteM, 31, 228);
+        System.arraycopy(typeOfValue, 0, byteM, 34, 2);
+        int index = 36;
+        if(this.numberOfValues != 0){
+            for (String s : this.responseValue) {
+                byte[] size = intToByteArray(s.length());
+                System.arraycopy(size, 0, byteM, index, 4);
+                index += 4;
+                byte[] value = s.getBytes(StandardCharsets.UTF_8);
+                System.arraycopy(value, 0, byteM, index, s.length());
+                index += s.length();
+            }
         }
-        if(this.authoritiesValues != null){
-            byte[] authoritiesValues = this.authoritiesValues.getBytes(StandardCharsets.UTF_8);
-            System.arraycopy(authoritiesValues, 0, byteM, 259, 259);
+        if(this.numberOfAuthorities != 0){
+            for (String s : this.authoritiesValues) {
+                byte[] size = intToByteArray(s.length());
+                System.arraycopy(size, 0, byteM, index, 4);
+                index += 4;
+                byte[] value = s.getBytes(StandardCharsets.UTF_8);
+                System.arraycopy(value, 0, byteM, index, s.length());
+                index += s.length();
+            }
         }
-        if(this.extraValues != null){
-            byte[] extraValues = this.extraValues.getBytes(StandardCharsets.UTF_8);
-            System.arraycopy(extraValues, 0, byteM, 518, 15);
+        if(this.numberOfExtra != 0){
+            for (String s : this.extraValues) {
+                byte[] size = intToByteArray(s.length());
+                System.arraycopy(size, 0, byteM, index, 4);
+                index += 4;
+                byte[] value = s.getBytes(StandardCharsets.UTF_8);
+                System.arraycopy(value, 0, byteM, index, s.length());
+                index += s.length();
+            }
         }
         return byteM;
     }
+    public DNSmessage(byte[] message) throws Exception {
+        byte[] arrayBytes = message;
+        this.id = ByteBuffer.wrap(Arrays.copyOfRange(arrayBytes, 0, 4)).getInt();
+        this.flags = new int[3];
+        this.flags[0] = ByteBuffer.wrap(Arrays.copyOfRange(arrayBytes, 4, 5)).get();
+        this.flags[1] = ByteBuffer.wrap(Arrays.copyOfRange(arrayBytes, 5, 6)).get();
+        this.flags[2] = ByteBuffer.wrap(Arrays.copyOfRange(arrayBytes, 6, 7)).get();
+
+        this.responseCode = ByteBuffer.wrap(Arrays.copyOfRange(arrayBytes, 7, 11)).get();
+        this.numberOfValues = ByteBuffer.wrap(Arrays.copyOfRange(arrayBytes, 11, 15)).get();
+        this.numberOfAuthorities = ByteBuffer.wrap(Arrays.copyOfRange(arrayBytes, 15, 19)).get();
+        this.numberOfExtra = ByteBuffer.wrap(Arrays.copyOfRange(arrayBytes, 19, 23)).get();
+        this.name = new String(Arrays.copyOfRange(arrayBytes, 23, 34), StandardCharsets.UTF_8);
+        this.typeOfValue = new String(Arrays.copyOfRange(arrayBytes, 34, 36), StandardCharsets.UTF_8);
+        this.responseValue = new ArrayList<>();
+        int index = 36;
+        for (int i = 0; i < this.numberOfValues; i++) {
+            int size = ByteBuffer.wrap(Arrays.copyOfRange(arrayBytes, index, index + 4)).getInt();
+            index += 4;
+            this.responseValue.add(new String(Arrays.copyOfRange(arrayBytes, index, index + size), StandardCharsets.UTF_8));
+            index += size;
+        }
+        this.authoritiesValues = new ArrayList<>();
+        for (int i = 0; i < this.numberOfAuthorities; i++) {
+            int size = ByteBuffer.wrap(Arrays.copyOfRange(arrayBytes, index, index + 4)).getInt();
+            index += 4;
+            this.authoritiesValues.add(new String(Arrays.copyOfRange(arrayBytes, index, index + size), StandardCharsets.UTF_8));
+            index += size;
+        }
+        this.extraValues = new ArrayList<>();
+        for (int i = 0; i < this.numberOfExtra; i++) {
+            int size = ByteBuffer.wrap(Arrays.copyOfRange(arrayBytes, index, index + 4)).getInt();
+            index += 4;
+            this.extraValues.add(new String(Arrays.copyOfRange(arrayBytes, index, index + size), StandardCharsets.UTF_8));
+            index += size;
+        }
+
+
+
+    }
+
 
     /**
      * Método que converte um inteiro num array de bytes
@@ -179,6 +219,18 @@ public class DNSmessage implements Serializable {
     public String toString() {
         
         String[] flag = flagToS();
+        String responseV = "";
+        for(String g : responseValue){
+            responseV += "\nRESPONSE-VALUES = " + g +",";
+        }
+        String av = "";
+        for(String g : authoritiesValues){
+            av +="\nAUTHORITIES-VALUES = " + g +",";
+        }
+        String ev = "";
+        for(String g : extraValues){
+            ev += "\nEXTRA-VALUES = " + g +",";
+        }
          
         return "# Header\n" +
         "MESSAGE-ID = " + id +
@@ -190,10 +242,8 @@ public class DNSmessage implements Serializable {
         ",\n# Data: Query Info\n" +
         "QUERY-INFO.NAME = " + name +  
         ", QUERY-INFO.TYPE = " + typeOfValue +
-        ",;\n# Data: list os Response, Authorities and Extra Values\n" +  
-        "RESPONSE-VALUES = " + responseValue +  
-        "\nAUTHORITIES-VALUES = " + authoritiesValues + 
-        "\nEXTRA-VALUES = " + extraValues;
+        ",;\n# Data: list os Response, Authorities and Extra Values" + 
+         responseV + av + ev;
 
                 
     }
