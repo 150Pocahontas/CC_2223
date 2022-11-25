@@ -10,8 +10,12 @@ class ParseConfigFile{
     
     ParseConfigFile(String fileName) throws IOException{
         BufferedReader reader;
+        this.dbFile = new ArrayList<>();
+        this.logFile = new ArrayList<>();
+        this.servers = new HashMap<>();
         try{
             reader = new BufferedReader(new FileReader(fileName));
+            //read lines
             String line = reader.readLine();
             while(line != null){
                 //if 2 word of line
@@ -19,13 +23,15 @@ class ParseConfigFile{
                 if(words[1].equals("DB")){
                     dbFile.add(words[0]);
                 }else if(words[1].equals("SP") || words[1].equals("SS") || words[1].equals("DD")){
-                    servers.put(words[0], words[3]);
+                    servers.put(words[0], words[2]);
                 }else if(words[1].equals("LG")){
                     logFile.add(words[2] + ":" + words[0]);
                 }else if(words[1].equals("ST")){
                     rootFile = words[2];
                 }
+                line = reader.readLine();
             }
+            reader.close();
         }catch(FileNotFoundException e){
             System.out.println("File not found: " + e);
         }
