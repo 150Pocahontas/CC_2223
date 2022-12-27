@@ -9,6 +9,7 @@ import java.util.stream.*;
 public class DNSmessage implements Serializable {
     public static final int MAX_SIZE_DATA = 1028;
     public static final int MAX_SIZE_MESSAGE = MAX_SIZE_DATA + 32;
+    public static final String ENCRIPTION_KEY = "CC22-TP6-Grupo02";
 
     //Header Fields
     private final int id;
@@ -163,15 +164,15 @@ public class DNSmessage implements Serializable {
 
     //encrypt the message with the key
     public static byte[] encrypt(byte[] message) throws Exception {
-        Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-        SecretKeySpec secretKey = new SecretKeySpec(message, "RSA");
+        Cipher cipher = Cipher.getInstance("AES");
+        SecretKeySpec secretKey = new SecretKeySpec(ENCRIPTION_KEY.getBytes(StandardCharsets.UTF_8), "AES");
         cipher.init(Cipher.ENCRYPT_MODE, secretKey);
         return cipher.doFinal(message);
     }
     //decrypt the message with the key
     public static byte[] decrypt(byte[] message) throws Exception {
-        Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-        SecretKeySpec secretKey = new SecretKeySpec(message, "RSA");
+        Cipher cipher = Cipher.getInstance("AES");
+        SecretKeySpec secretKey = new SecretKeySpec(ENCRIPTION_KEY.getBytes(StandardCharsets.UTF_8), "AES");
         cipher.init(Cipher.DECRYPT_MODE, secretKey);
         return cipher.doFinal(message);
     }
