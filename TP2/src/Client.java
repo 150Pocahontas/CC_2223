@@ -5,7 +5,6 @@ import java.io.*;
 class Client{
     // The client program reciveis as arguments: hostaddress:port , NAME , TYPE VALUE , FLAG[optional] 
     public static void main(String[] args) throws Exception {
-<<<<<<< HEAD
         try { 
             String[] hostPort = args[0].split(":");
             Socket clientSocket = new Socket(hostPort[0], Integer.parseInt(hostPort[1]));
@@ -41,7 +40,7 @@ class Client{
             clientSocket.close();
         } catch (Exception e) {
             System.out.println("Error: " + e);
-=======
+
         // modo debug
         if(args[0].equals("-d")){
             try { 
@@ -116,8 +115,6 @@ class Client{
             } catch (Exception e) {
                 System.out.println("Error: " + e);
             }
-
->>>>>>> 63d550d26e71380d4428a12acb5b8690a2f6a050
         }
     }
 }
