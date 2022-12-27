@@ -3,47 +3,111 @@ import java.io.*;
 
 class ParseDBFile{
 
-    String fileName;
+    String pathFile;
     String def;
     String ttl;
+    String sp;
+    String admin;
+    int serial;
+    int refresh;
+    int retry;
+    int expire;
     List<String> mxValues;
     List<String> nsValues;
     List<String> extraValues;
+    int numOfEntries;
+    List<String> entries;
     
-    ParseDBFile(String fileName) throws IOException{
-        BufferedReader reader;
+    ParseDBFile(String fileName) {
+        pathFile = fileName;
         mxValues = new ArrayList<>();
         nsValues = new ArrayList<>();
         extraValues = new ArrayList<>();
+        entries = new ArrayList<>();
+        numOfEntries = 0;
+    }
+
+    public void parseFile() throws IOException{
+        BufferedReader reader;
         try{
-            reader = new BufferedReader(new FileReader(fileName));
+            reader = new BufferedReader(new FileReader(pathFile));
             String line = reader.readLine();
             while(line != null){
-                String[] words = line.split(" ");
-                if(!words[0].equals("#") && !words[0].equals("@")){
-                    if(words[0].equals("TTL"))
-                        ttl = words[2];
-                    else if(words[1].equals("A") ){ // || words[1].equals("CNAME")
+                if(!line.isEmpty() && !(line.split(" "))[0].equals("#")){
+                    numOfEntries++;
+                    entries.add(line);
+                    String[] words = line.split(" ");
+                    if(!words[0].equals("@")){
+                        if(words[0].equals("TTL"))
+                            if(words[2] == null) ttl = "0";
+                            else ttl = words[2];
+                        else if(words[1].equals("A"))// || words[1].equals("CNAME")
                             extraValues.add(words[0] + def + " A " + words[2] + " " + ttl);
+                    }else {
+                        if(!words[1].equals("DEFAULT")){}
+                        if(words[1].equals("MX")){
+                            mxValues.add(def + " MX " + words[2] + " " + ttl);
+                        }else if(words[1].equals("NS")){
+                            nsValues.add(def + " NS " + words[2] + " " + ttl);
+                        } else if(words[1].equals("DEFAULT")){
+                            def = words[2];
+                        }else if(words[1].equals("SOASP")){
+                            sp = words[2];
+                        }else if(words[1].equals("SOAADMIN")){
+                            admin = words[2];
+                        }else if(words[1].equals("SOASERIAL")){
+                            serial = Integer.parseInt(words[2]);
+                        }else if(words[1].equals("SOAREFRESH")){
+                            refresh =  Integer.parseInt(words[2]);
+                        }else if(words[1].equals("SOARETRY")){  
+                            retry =  Integer.parseInt(words[2]);
+                        }else if(words[1].equals("SOAEXPIRE")){
+                            expire =  Integer.parseInt(words[2]);
+                        }
                     }
-                }else if(words[0].equals("@") && !words[1].equals("DEFAULT")){
-                    if(words[1].equals("MX")){
-                        mxValues.add(def + " MX " + words[2] + " " + ttl);
-                    }
-                    if(words[1].equals("NS")){
-                        nsValues.add(def + " NS " + words[2] + " " + ttl);
-                    }
-                } else if(words[1].equals("DEFAULT")){
-                    def = words[2];
                 }
-
                 line = reader.readLine();
             }
             reader.close();
-            //System.out.println(infoDomain);
         }catch(FileNotFoundException e){
             System.out.println("File not found: " + e);
         }
+    }
+
+    public String getPathFile(){
+        return pathFile;
+    }
+
+    public String getDef(){
+        return def;
+    }
+
+    public String getTTL(){
+        return ttl;
+    }
+
+    public String getSOASP(){
+        return sp;
+    }
+
+    public String getSOAADMIN(){
+        return admin;
+    }
+
+    public int getSOASERIAL(){
+        return serial;
+    }
+
+    public int getSOAREFRESH(){
+        return refresh;
+    }
+
+    public int getSOARETRY(){
+        return retry;
+    }
+
+    public int getSOAEXPIRE(){
+        return expire;
     }
 
     public List<String> getMX(){
@@ -104,6 +168,38 @@ class ParseDBFile{
     public List<String> getExtraValues(){
         return extraValues;
     }
+
+    public int getNumOfEntries(){
+        return numOfEntries;
+    }
+
+    public List<String> getEntries(){
+        return entries;
+    }
+
+    public void clearListOfEntries(){
+        entries.clear();
+    }
+
+    public void addEntry(String entry){
+        entries.add(entry);
+    }
+
+    //rewrite bd file
+    public void rewriteFile(String fileName) throws IOException{
+        BufferedWriter writer;
+        try{
+            writer = new BufferedWriter(new FileWriter(fileName));
+            for(String entry : entries){
+                writer.write(entry);
+                writer.newLine();
+            }
+            writer.close();
+        }catch(FileNotFoundException e){
+            System.out.println("File not found: " + e);
+        }
+    }
+
 
 
 }

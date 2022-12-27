@@ -1,5 +1,5 @@
 import java.net.*;
-import java.util.random.RandomGenerator;
+import java.util.*;
 import java.io.*;
 
 class Client{
@@ -9,8 +9,9 @@ class Client{
             String[] hostPort = args[0].split(":");
             Socket clientSocket = new Socket(hostPort[0], Integer.parseInt(hostPort[1]));
             System.out.println("Connected to server");
-            RandomGenerator rand = RandomGenerator.getDefault();
-            int id = rand.nextInt(0, 65535);
+            //generate random number
+            Random rand = new Random();
+            int id = rand.nextInt(65535);
             int[] flags = new int[3];
             for(int i = 2; i < args.length ; i++){
                 if(args[i].equals("Q")) flags[0] = 1;

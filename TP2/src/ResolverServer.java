@@ -9,8 +9,6 @@ class ResolverServer{
             ParseConfigFile conf = new ParseConfigFile(args[0]);
             System.out.println("Config file parsed " + args[0]);  
             Map<String, ParseDBFile> db = new HashMap<String, ParseDBFile>();
-            for(String dbFile : conf.getDatabase())
-                db.put(dbFile, new ParseDBFile("../files/SP/" + dbFile));
             ServerSocket serverSocket = new ServerSocket(1234);
             System.out.println("Listening on port 1234");
             Socket clientSocket = serverSocket.accept();

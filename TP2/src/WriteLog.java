@@ -1,14 +1,22 @@
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
+import java.util.concurrent.locks.ReentrantLock;
 
 //Write in file
 class WriteLog{
+
+    private final String name;
+
+    public WriteLog(String name){
+        File file = new File(name);
+        if(!file.exists()) 
+            file.delete();
+        this.name = name;
+    }
+
     //Write in file
-    public static void write(String line,String logFile){
+    public void write(String line){
         try{
-            FileWriter fw = new FileWriter(logFile, true);
+            FileWriter fw = new FileWriter(name, true);
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter out = new PrintWriter(bw);
             out.println(line);
@@ -18,3 +26,4 @@ class WriteLog{
         }
     }
 }
+
