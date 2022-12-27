@@ -9,8 +9,6 @@ import java.util.stream.*;
 public class DNSmessage implements Serializable {
     public static final int MAX_SIZE_DATA = 1028;
     public static final int MAX_SIZE_MESSAGE = MAX_SIZE_DATA + 32;
-    public static final String ENCRIPTION_KEY = "CC22-Pl6-Grupo02";
-    private static final SecretKey key = new SecretKeySpec(ENCRIPTION_KEY.getBytes(), "AES");
 
     //Header Fields
     private final int id;
@@ -107,36 +105,48 @@ public class DNSmessage implements Serializable {
         this.flags[2] = ByteBuffer.wrap(Arrays.copyOfRange(arrayBytes, 6, 7)).get();
 
         this.responseCode = ByteBuffer.wrap(Arrays.copyOfRange(arrayBytes, 7, 11)).get();
-        this.numberOfValues = ByteBuffer.wrap(Arrays.copyOfRange(arrayBytes, 11, 15)).get();
-        this.numberOfAuthorities = ByteBuffer.wrap(Arrays.copyOfRange(arrayBytes, 15, 19)).get();
-        this.numberOfExtra = ByteBuffer.wrap(Arrays.copyOfRange(arrayBytes, 19, 23)).get();
+        this.numberOfValues = ByteBuffer.wrap(Arrays.copyOfRange(arrayBytes, 11, 15)).getInt();
+        this.numberOfAuthorities = ByteBuffer.wrap(Arrays.copyOfRange(arrayBytes, 15, 19)).getInt();
+        this.numberOfExtra = ByteBuffer.wrap(Arrays.copyOfRange(arrayBytes, 19, 23)).getInt();
         this.name = new String(Arrays.copyOfRange(arrayBytes, 23, 34), StandardCharsets.UTF_8);
         this.typeOfValue = new String(Arrays.copyOfRange(arrayBytes, 34, 36), StandardCharsets.UTF_8);
-        this.responseValue = new ArrayList<>();
         int index = 36;
-        for (int i = 0; i < this.numberOfValues; i++) {
-            int size = ByteBuffer.wrap(Arrays.copyOfRange(arrayBytes, index, index + 4)).getInt();
-            index += 4;
-            this.responseValue.add(new String(Arrays.copyOfRange(arrayBytes, index, index + size), StandardCharsets.UTF_8));
-            index += size;
+        // verify if there are values to be read and read them
+        if(this.numberOfValues != 0){
+            System.out.println("entrouNV");
+            this.responseValue = new ArrayList<>();
+            for (int i = 0; i < this.numberOfValues; i++) {
+                int size = ByteBuffer.wrap(Arrays.copyOfRange(arrayBytes, index, index+4)).getInt();
+                index += 4;
+                String value = new String(Arrays.copyOfRange(arrayBytes, index, index+size), StandardCharsets.UTF_8);
+                index += size;
+                this.responseValue.add(value);
+            }
         }
-        this.authoritiesValues = new ArrayList<>();
-        for (int i = 0; i < this.numberOfAuthorities; i++) {
-            int size = ByteBuffer.wrap(Arrays.copyOfRange(arrayBytes, index, index + 4)).getInt();
-            index += 4;
-            this.authoritiesValues.add(new String(Arrays.copyOfRange(arrayBytes, index, index + size), StandardCharsets.UTF_8));
-            index += size;
+        // verify if there are authorities to be read and read them
+        if(this.numberOfAuthorities != 0){
+            System.out.println("entrouNA");
+            this.authoritiesValues = new ArrayList<>();
+            for (int i = 0; i < this.numberOfAuthorities; i++) {
+                int size = ByteBuffer.wrap(Arrays.copyOfRange(arrayBytes, index, index+4)).getInt();
+                index += 4;
+                String value = new String(Arrays.copyOfRange(arrayBytes, index, index+size), StandardCharsets.UTF_8);
+                index += size;
+                this.authoritiesValues.add(value);
+            }
         }
-        this.extraValues = new ArrayList<>();
-        for (int i = 0; i < this.numberOfExtra; i++) {
-            int size = ByteBuffer.wrap(Arrays.copyOfRange(arrayBytes, index, index + 4)).getInt();
-            index += 4;
-            this.extraValues.add(new String(Arrays.copyOfRange(arrayBytes, index, index + size), StandardCharsets.UTF_8));
-            index += size;
+        // verify if there are extra values to be read and read them
+        if(this.numberOfExtra != 0){
+            System.out.println("entrouNEx");
+            this.extraValues = new ArrayList<>();
+            for (int i = 0; i < this.numberOfExtra; i++) {
+                int size = ByteBuffer.wrap(Arrays.copyOfRange(arrayBytes, index, index+4)).getInt();
+                index += 4;
+                String value = new String(Arrays.copyOfRange(arrayBytes, index, index+size), StandardCharsets.UTF_8);
+                index += size;
+                this.extraValues.add(value);
+            }
         }
-
-
-
     }
 
 
@@ -151,17 +161,21 @@ public class DNSmessage implements Serializable {
         return byteBuffer.array();
     }
 
-    public byte[] encrypt(byte[] message) throws Exception {
-        Cipher cipher = Cipher.getInstance("AES");
-        cipher.init(Cipher.ENCRYPT_MODE, key);
-        return cipher.doFinal(message,0,message.length);
+    //encrypt the message with the key
+    public static byte[] encrypt(byte[] message) throws Exception {
+        Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+        SecretKeySpec secretKey = new SecretKeySpec(message, "RSA");
+        cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+        return cipher.doFinal(message);
+    }
+    //decrypt the message with the key
+    public static byte[] decrypt(byte[] message) throws Exception {
+        Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+        SecretKeySpec secretKey = new SecretKeySpec(message, "RSA");
+        cipher.init(Cipher.DECRYPT_MODE, secretKey);
+        return cipher.doFinal(message);
     }
 
-    public byte[] decrypt(byte[] message) throws Exception {
-        Cipher cipher = Cipher.getInstance("AES");
-        cipher.init(Cipher.DECRYPT_MODE, key);
-        return (cipher.doFinal(message,0,message.length));
-    }
 
     public int getId() {
         return id;
