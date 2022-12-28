@@ -16,11 +16,9 @@ class Client{
                 Random rand = new Random();
                 int id = rand.nextInt(65535);
                 int[] flags = new int[3];
-                for(int i = 2; i < args.length ; i++){
-                    if(args[i].equals("Q")) flags[0] = 1;
-                    if(args[i].equals("R")) flags[1] = 1;
-                    if(args[i].equals("A")) flags[2] = 1;
-                } 
+                flags[0] = 1;
+                flags[1] = 0;
+                if(args[3].equals("A")) flags[2] = 1; 
                 DNSmessage message = new DNSmessage(id, flags, 0, 0, 0, 0, args[2], args[3], null, null, null);
                 System.out.println("Sending message to server");
                 //send message to server
