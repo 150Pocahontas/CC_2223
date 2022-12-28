@@ -1,5 +1,6 @@
 import java.util.*;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 class ParseDBFile{
 
@@ -187,23 +188,23 @@ class ParseDBFile{
 
     //rewrite bd file
     public void rewriteFile(String fileName) throws IOException{
-        try{      
-            String name = "../files/SS/" + fileName;
-            
-            File file = new File(name);
-            if(!file.exists()) {
+        try{                  
+            File file = new File(fileName);
+            if(file.exists()){
                 file.createNewFile();
             }
+        
 
-            BufferedWriter writer;
-            writer = new BufferedWriter(new FileWriter(fileName));
-            
-            for(String entry : entries){
-                writer.write(entry);
-                writer.newLine();
+            FileOutputStream out = new FileOutputStream(fileName);
+
+            StringBuilder content = new StringBuilder();
+            for(String s : entries){
+                content.append(s);
             }
-            writer.close();
-        }catch(FileNotFoundException e){
+            
+            out.write(content.toString().getBytes(StandardCharsets.UTF_8));
+            out.close();
+            }catch(FileNotFoundException e){
             System.out.println("File not found: " + e);
         }
     }

@@ -22,9 +22,11 @@ public class PrimaryServer implements Runnable {
 
     public void run() {
         try {
-            ServerSocket socket = new ServerSocket(8080);
             while (!Server.EXIT) {
+                ServerSocket socket = new ServerSocket(8080);
+                System.out.println("Waiting for client");
                 Socket client = socket.accept();
+                System.out.println("Client connected");
                 BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
                 String query = in.readLine();
                 System.out.println(query);
@@ -32,44 +34,43 @@ public class PrimaryServer implements Runnable {
                 if (querySplit[0].equals("SOA")) {
                     // String query = "SOA " + domain + " " + ipLocal + " " + port + " " +
                     // db.getSOASERIAL();
-                    if (ssList.contains(new Pair(querySplit[1], querySplit[2]))) {
+                    if(ssList.contains(new Pair(querySplit[1], querySplit[2]))) {
                         ParseDBFile db = new ParseDBFile(Server.getBDName(dbList, querySplit[1]));
                         db.parseFile();
-                        System.out.println(db.getPathFile());
                         if (Integer.parseInt(querySplit[4]) < db.getSOASERIAL()) {
                             query = "SOA entries: " + db.getNumOfEntries();
                             System.out.println(query);
                             PrintWriter out = new PrintWriter(client.getOutputStream(), true);
                             out.println(query);
-                        } else {
+                            in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+                            query = in.readLine();
+                            System.out.println(query);
+                            if (query.equals("OK: " + db.getNumOfEntries())) {
+                                int i = 1;
+                                for (String entry : db.getEntries()) {
+                                    query = i + ": " + entry;
+                                    out = new PrintWriter(client.getOutputStream(), true);
+                                    out.println(query);
+                                    i++;
+                                }
+                            }
+                        }else{
                             PrintWriter out = new PrintWriter(client.getOutputStream(), true);
                             out.println("Serial number is the same");
-                            System.out.println("Serial number is the same");
-                            client.close();
-                            break;
-                        }
-                        in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-                        query = in.readLine();
-                        System.out.println(query);
-                        if (query.equals("OK: " + db.getNumOfEntries())) {
-                            int i = 1;
-                            for (String entry : db.getEntries()) {
-                                query = i + ": " + entry;
-                                PrintWriter out = new PrintWriter(client.getOutputStream(), true);
-                                out.println(query);
-                                i++;
-                            }
+                            System.out.println("Serial number is the same");   
                         }
                         client.close();
+                        socket.close();
                         System.out.println("Client closed");
                     } else {
                         PrintWriter out = new PrintWriter(client.getOutputStream(), true);
                         out.println("Domain not found or Server not permited");
                         client.close();
+                        socket.close();
+                        System.out.println("Client closed");
                     }
                 }
             }
-            socket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
