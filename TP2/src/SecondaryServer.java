@@ -21,7 +21,6 @@ public class SecondaryServer implements Runnable{
         try {
             Socket socket = new Socket(ipPrimary,port);
             while(!Server.EXIT){
-
                 String query;
                 if(db != null){
                     Thread.sleep(db.getSOAREFRESH());
@@ -31,7 +30,7 @@ public class SecondaryServer implements Runnable{
                 } else{
                     InetAddress ip = InetAddress.getLocalHost();
                     String ipLocal = ip.getHostAddress();
-                    this.db = new ParseDBFile(domain + "_" + ip);
+                    this.db = new ParseDBFile("../files/SS/" + domain + "_" + ip);
                     query = "SOA " + domain + " " + ipLocal + " " + port + " " + 0;
                 }
                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
@@ -49,20 +48,14 @@ public class SecondaryServer implements Runnable{
                     System.out.println("[Menssagem enviada] " + query);
                     out.println(query);
                     db.clearListOfEntries();
-                    for(int i = 1; i < numOfEntries; i++){
-                        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                        response = in.readLine();
-                        System.out.println(i + ": " + response);
+                    while ((response = in.readLine()) != null){
                         String[] responseSplit2 = response.split(": ");
                         db.addEntry(responseSplit2[1]);
                     }
                     db.rewriteFile(db.getPathFile());
-                    in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                    response = in.readLine();
                 }
             }
             socket.close();
-            
         }catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) { } 

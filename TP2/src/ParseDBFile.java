@@ -187,9 +187,17 @@ class ParseDBFile{
 
     //rewrite bd file
     public void rewriteFile(String fileName) throws IOException{
-        BufferedWriter writer;
-        try{
+        try{      
+            String name = "../files/SS/" + fileName;
+            
+            File file = new File(name);
+            if(!file.exists()) {
+                file.createNewFile();
+            }
+
+            BufferedWriter writer;
             writer = new BufferedWriter(new FileWriter(fileName));
+            
             for(String entry : entries){
                 writer.write(entry);
                 writer.newLine();

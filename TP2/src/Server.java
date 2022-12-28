@@ -1,5 +1,6 @@
 import java.io.*;
-import java.net.DatagramSocket;
+import java.util.List;
+import java.net.*;
 
 /**
  * Classe que implementa um Servidor
@@ -7,6 +8,7 @@ import java.net.DatagramSocket;
 public class Server {
     public static boolean EXIT = false;
     public static boolean DEBUG = false;
+    public static int index = 0;
     
     /**
      * Método que inicaliza o Servidor
@@ -14,10 +16,12 @@ public class Server {
      * @throws Exception
      */
     public static void main(String[] args) throws Exception {
-        ParseConfigFile configFile = new ParseConfigFile(args[0]);
-        DatagramSocket ds = new DatagramSocket(8888);
-        DNSmessageQueue queue = new DNSmessageQueue();
-        if(args[2] != null && args[1].equals("-d")) DEBUG = true;
+        if(args[index].equals("-d")){
+            DEBUG = true;
+            index = 1;
+        } 
+        ParseConfigFile configFile = new ParseConfigFile(args[index]);
+        DatagramSocket ds = new DatagramSocket(8080);
         
         for(Pair ss: configFile.getps()){
             if(ss.getvalue().matches(".+:.+")){
@@ -40,11 +44,16 @@ public class Server {
             Thread primaryServer = new Thread();
             primaryServer.start();
         }
-
-        Thread receiver = new Thread();
-        Thread sender = new Thread(new Sender(ds, queue, configFile.getdbList()));
-        receiver.start();
-        sender.start();
+     
+        while(!EXIT){
+            byte[] messageReceived = new byte[DNSmessage.MAX_SIZE_MESSAGE];
+            DatagramPacket datagramPacket = new DatagramPacket(messageReceived, messageReceived.length);
+            System.out.println("Waiting for a socket");
+            ds.receive(datagramPacket);
+            Thread thread = new Thread(new ResponseServer(datagramPacket, messageReceived ,configFile.getdbList()));
+            thread.start();
+        }
+        
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String query = reader.readLine();
@@ -57,5 +66,15 @@ public class Server {
 
         Thread.sleep(1000);
         System.exit(0);
-    }        
+    }    
+    
+    
+    public static String getBDName(List<Pair> dbList2, String domain){
+        for(Pair p: dbList2){
+            if(p.getdomain().equals(domain)){
+                return p.getvalue();
+            }
+        }
+        return null;
+    }
 }

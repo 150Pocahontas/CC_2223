@@ -263,7 +263,7 @@ public class DNSmessage implements Serializable {
                 
     }
 
-    public String toStringC(){
+    public String toStringDebug(){
         String[] flag = flagToS();
         return id + "," + flag + "," + responseCode + ',' + numberOfValues + ',' + numberOfAuthorities + ',' + numberOfExtra + ',' + name + ',' + typeOfValue;
     }
