@@ -19,7 +19,6 @@ public class SecondaryServer implements Runnable{
 
     public void run() {   
         try {
-            
             while(!Server.EXIT){
                 String query;
                 if(db != null){
@@ -56,6 +55,7 @@ public class SecondaryServer implements Runnable{
                         db.addEntry(responseSplit2[1] + "\n");
                     }
                     db.rewriteFile(db.getPathFile());
+                    Server.configFile.addDbFile(new Pair(domain,db.getPathFile()));
                 }
                 socket.close();
             }

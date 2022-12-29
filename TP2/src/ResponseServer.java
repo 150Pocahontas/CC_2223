@@ -1,4 +1,7 @@
 import java.util.*;
+
+import javax.swing.text.GlyphView.GlyphPainter;
+
 import java.net.*;
 
 public class ResponseServer implements Runnable {
@@ -16,38 +19,44 @@ public class ResponseServer implements Runnable {
     }
 
     public void run() {
-           
-        byte[] messageDecrypted;
         try {
-            System.out.println("Decrypting Received Message... \n ");
-            messageDecrypted = DNSmessage.decrypt(dnsMessage);
-            DNSmessage message = new DNSmessage(messageDecrypted);
+            DNSmessage message = new DNSmessage(dnsMessage);
             if(Server.DEBUG){
-                System.out.println("Message Decrypted: \n "+ message.toStringDebug());
+                System.out.println("[Received]: \n "+ message.toStringDebug());
             }
             else {
-                System.out.println("Message Decrypted: \n "+ message);
+                System.out.println("[Received]: \n "+ message);
             }
             String name[] = (message.getName()).split("\\.");
             DNSmessage response = null;
-            String dbName = name[name.length-2] + "." + name[name.length-1];
+            //String dbName = name[name.length-2] + "." + name[name.length-1];
             String type = message.getTypeOfValue();
+            int[] flags = new int[3];
+            flags[0] = 0;
+            flags[1] = 1;
+            flags[2] = 0; 
             if(Server.getBDName(dbList, message.getName()) != null){
                 ParseDBFile db = new ParseDBFile(Server.getBDName(dbList, message.getName()));
                 db.parseFile();
-                response = new DNSmessage(message.getId(), message.getFlags(), 0, db.getNumRV(type), db.getNumAV(type), db.getNumExtra(), message.getName(), message.getTypeOfValue(), db.getResponseValues(type) ,db.getAuthoritativeValues(type), db.getExtraValues());
+                response = new DNSmessage(message.getId(), flags, 0, db.getNumRV(type), db.getNumAV(type), db.getNumExtra(), message.getName(), message.getTypeOfValue(), db.getResponseValues(type) ,db.getAuthoritativeValues(type), db.getExtraValues());
             }else{
-                response = new DNSmessage(message.getId(), message.getFlags(), 2, 0, 0, 0, message.getName(), message.getTypeOfValue(), null,null, null);
+                response = new DNSmessage(message.getId(), flags, 2, 0, 0, 0, message.getName(), message.getTypeOfValue(), null,null, null);
             }
             // encrypt message
-            byte[] messageEncrypted = DNSmessage.encrypt(response.toByteArray());
+            dnsMessage = response.toByteArray();
             //send the message to the client
             System.out.println("Sending message to client");
             InetAddress clientAddress = datagramPacket.getAddress();
             int clientPort = datagramPacket.getPort();
-            datagramPacket = new DatagramPacket(messageEncrypted, messageEncrypted.length, clientAddress, clientPort);
+            datagramPacket = new DatagramPacket(dnsMessage, dnsMessage.length, clientAddress, clientPort);
             DatagramSocket datagramSocket = new DatagramSocket(datagramPacket.getPort());
             datagramSocket.send(datagramPacket);
+            if(Server.DEBUG){
+                System.out.println("[Sent]: \n "+ response.toStringDebug());
+            }
+            else {
+                System.out.println("[Sent]: \n "+ response);
+            }
             System.out.println("Message sent to client");
              
 

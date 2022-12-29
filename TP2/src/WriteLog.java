@@ -1,16 +1,17 @@
 import java.io.*;
-import java.util.concurrent.locks.ReentrantLock;
 
 //Write in file
 class WriteLog{
 
     private final String name;
+    private final String domain;
 
-    public WriteLog(String name){
+    public WriteLog(String domain, String name){
         File file = new File(name);
         if(!file.exists()) 
             file.delete();
         this.name = name;
+        this.domain = domain;
     }
 
     //Write in file

@@ -110,4 +110,8 @@ class ParseConfigFile{
     public String getrootFile(){
         return rootFile;
     }
+
+    public void addDbFile(Pair dbFile){
+        this.dbFile.add(dbFile);
+    }
 }

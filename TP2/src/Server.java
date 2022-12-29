@@ -8,6 +8,7 @@ import java.net.*;
 public class Server {
     public static boolean EXIT = false;
     public static boolean DEBUG = false;
+    public static ParseConfigFile configFile;
     public static int index = 0;
     
     /**
@@ -20,9 +21,11 @@ public class Server {
             DEBUG = true;
             index = 1;
         } 
-        ParseConfigFile configFile = new ParseConfigFile(args[index]);
+        configFile = new ParseConfigFile(args[index]);
         DatagramSocket ds = new DatagramSocket(8080);
-        
+        for(Pair log : configFile.getlogFile()){
+            new WriteLog(log.getdomain(), log.getvalue());
+        } 
         for(Pair ss: configFile.getps()){
             if(ss.getvalue().matches(".+:.+")){
                 String[] ipPort = ss.getvalue().split(":");
@@ -39,6 +42,8 @@ public class Server {
             Thread primaryServer = new Thread(new PrimaryServer(configFile.getss(),configFile.getdbList()));
             primaryServer.start();
         }
+
+        System.out.println("Server is running");
      
         while(!EXIT){
             byte[] messageReceived = new byte[DNSmessage.MAX_SIZE_MESSAGE];

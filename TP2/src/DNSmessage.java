@@ -114,7 +114,6 @@ public class DNSmessage implements Serializable {
         int index = 36;
         // verify if there are values to be read and read them
         if(this.numberOfValues != 0){
-            System.out.println("entrouNV");
             this.responseValue = new ArrayList<>();
             for (int i = 0; i < this.numberOfValues; i++) {
                 int size = ByteBuffer.wrap(Arrays.copyOfRange(arrayBytes, index, index+4)).getInt();
@@ -126,7 +125,6 @@ public class DNSmessage implements Serializable {
         }
         // verify if there are authorities to be read and read them
         if(this.numberOfAuthorities != 0){
-            System.out.println("entrouNA");
             this.authoritiesValues = new ArrayList<>();
             for (int i = 0; i < this.numberOfAuthorities; i++) {
                 int size = ByteBuffer.wrap(Arrays.copyOfRange(arrayBytes, index, index+4)).getInt();
@@ -138,7 +136,6 @@ public class DNSmessage implements Serializable {
         }
         // verify if there are extra values to be read and read them
         if(this.numberOfExtra != 0){
-            System.out.println("entrouNEx");
             this.extraValues = new ArrayList<>();
             for (int i = 0; i < this.numberOfExtra; i++) {
                 int size = ByteBuffer.wrap(Arrays.copyOfRange(arrayBytes, index, index+4)).getInt();
@@ -169,6 +166,7 @@ public class DNSmessage implements Serializable {
         cipher.init(Cipher.ENCRYPT_MODE, secretKey);
         return cipher.doFinal(message);
     }
+
     //decrypt the message with the key
     public static byte[] decrypt(byte[] message) throws Exception {
         Cipher cipher = Cipher.getInstance("AES");
@@ -211,17 +209,22 @@ public class DNSmessage implements Serializable {
     }
 
     private String[] flagToS(){
-        String[] flag = new String[1];
-        for(int i=0, j=0; i<3;i++){
-            if(i== 0 && this.flags[i] == 1){
+        int j=0;
+        for(int i=0; i<3; i++){
+            if(flags[i] == 1) j++;
+        }
+        String[] flag = new String[j];
+        j=0;
+        for(int i=0; i<3;i++){ 
+            if(i == 0 && this.flags[i] == 1){
                 flag[j] = "Q";
                 j++;
             } 
-            else if(i== 1 && this.flags[i] == 1){
+            else if(i == 1 && this.flags[i] == 1){
                 flag[j] = "R";
                 j++;
             } 
-            else if(i== 2 && this.flags[i] == 1) {
+            else if(i == 2 && this.flags[i] == 1) {
                 flag[j] = "A";
                 j++;
             } 
@@ -235,18 +238,33 @@ public class DNSmessage implements Serializable {
         
         String[] flag = flagToS();
         String responseV = "";
-        for(String g : responseValue){
-            responseV += "\nRESPONSE-VALUES = " + g +",";
+
+        if(responseValue==null){
+            responseV += "\nRESPONSE-VALUES = null ,";
+        }else{
+            for(String g : responseValue){
+                responseV += "\nRESPONSE-VALUES = " + g +",";
+            }
         }
+
         String av = "";
-        for(String g : authoritiesValues){
-            av +="\nAUTHORITIES-VALUES = " + g +",";
+        if(authoritiesValues==null){
+            av += "\nAUTHORITIES-VALUES = null ,";
+        }else{
+            for(String g : authoritiesValues){
+                av += "\nAUTHORITIES-VALUES = " + g +",";
+            }
         }
+
         String ev = "";
-        for(String g : extraValues){
-            ev += "\nEXTRA-VALUES = " + g +",";
+        if(extraValues==null){
+            ev += "\nEXTRA-VALUES = null ,";
+        }else{
+            for(String g : extraValues){
+                ev += "\nEXTRA-VALUES = " + g +",";
+            }
         }
-         
+                 
         return "# Header\n" +
         "MESSAGE-ID = " + id +
         ", FLAGS = " + Stream.of(flag).collect(Collectors.joining("+")) +
@@ -259,12 +277,10 @@ public class DNSmessage implements Serializable {
         ", QUERY-INFO.TYPE = " + typeOfValue +
         ",;\n# Data: list os Response, Authorities and Extra Values" + 
          responseV + av + ev;
-
-                
     }
 
     public String toStringDebug(){
         String[] flag = flagToS();
-        return id + "," + flag + "," + responseCode + ',' + numberOfValues + ',' + numberOfAuthorities + ',' + numberOfExtra + ',' + name + ',' + typeOfValue;
+        return id + "," + Stream.of(flag).collect(Collectors.joining("+")) + "," + responseCode + ',' + numberOfValues + ',' + numberOfAuthorities + ',' + numberOfExtra + ',' + name + ',' + typeOfValue;
     }
 }
