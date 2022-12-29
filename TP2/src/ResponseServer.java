@@ -19,9 +19,15 @@ public class ResponseServer implements Runnable {
            
         byte[] messageDecrypted;
         try {
-            
+            System.out.println("Decrypting Received Message... \n ");
             messageDecrypted = DNSmessage.decrypt(dnsMessage);
             DNSmessage message = new DNSmessage(messageDecrypted);
+            if(Server.DEBUG){
+                System.out.println("Message Decrypted: \n "+ message.toStringDebug());
+            }
+            else {
+                System.out.println("Message Decrypted: \n "+ message);
+            }
             String name[] = (message.getName()).split("\\.");
             DNSmessage response = null;
             String dbName = name[name.length-2] + "." + name[name.length-1];
@@ -33,9 +39,9 @@ public class ResponseServer implements Runnable {
             }else{
                 response = new DNSmessage(message.getId(), message.getFlags(), 2, 0, 0, 0, message.getName(), message.getTypeOfValue(), null,null, null);
             }
-             // encrypt message
+            // encrypt message
             byte[] messageEncrypted = DNSmessage.encrypt(response.toByteArray());
-             //send the message to the client
+            //send the message to the client
             System.out.println("Sending message to client");
             InetAddress clientAddress = datagramPacket.getAddress();
             int clientPort = datagramPacket.getPort();
@@ -43,6 +49,7 @@ public class ResponseServer implements Runnable {
             DatagramSocket datagramSocket = new DatagramSocket(datagramPacket.getPort());
             datagramSocket.send(datagramPacket);
             System.out.println("Message sent to client");
+             
 
             
         } catch (Exception e) {

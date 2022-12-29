@@ -39,11 +39,6 @@ public class Server {
             Thread primaryServer = new Thread(new PrimaryServer(configFile.getss(),configFile.getdbList()));
             primaryServer.start();
         }
-
-        if(configFile.getss() != null){
-            Thread primaryServer = new Thread();
-            primaryServer.start();
-        }
      
         while(!EXIT){
             byte[] messageReceived = new byte[DNSmessage.MAX_SIZE_MESSAGE];
