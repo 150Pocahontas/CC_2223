@@ -1,0 +1,13 @@
+@ DEFAULT com.
+TTL DEFAULT 86400
+@ SOASP com. TTL
+@ SOAADMIN dns\.com. TTL
+@ SOASERIAL 0117102022 TTL
+@ SOAREFRESH 14400 TTL
+@ SOARETRY 3600 TTL
+@ SOAEXPIRE 604800 TTL
+@ NS com. TTL
+@ NS example.com. TTL
+@ NS object.com. TTL
+example.com. A 10.2.2.2 TTL
+object.com. A 12.2.2.2.1 TTL
