@@ -20,8 +20,8 @@ public class DNSmessage implements Serializable {
     private final int numberOfExtra;
     //Data Fields
     // -> 2 Campos Query Info
-    private final String name;
-    private final String typeOfValue;
+    private static String name;
+    private static String typeOfValue;
 
     private List<String> responseValue;
     private List<String> authoritiesValues;
@@ -34,8 +34,8 @@ public class DNSmessage implements Serializable {
         this.numberOfValues = numberOfValues;
         this.numberOfAuthorities = numberOfAuthorities;
         this.numberOfExtra = numberOfExtra;
-        this.name = name;
-        this.typeOfValue = typeOfValue;
+        DNSmessage.name = name;
+        DNSmessage.typeOfValue = typeOfValue;
         this.responseValue = responseValue;
         this.authoritiesValues = authoritiesValues;
         this.extraValues = extraValues;
@@ -200,11 +200,11 @@ public class DNSmessage implements Serializable {
         return numberOfExtra;
     }
 
-    public String getName() {
+    public static String getName() {
         return name;
     }
 
-    public String getTypeOfValue() {
+    public static String getTypeOfValue() {
         return typeOfValue;
     }
 

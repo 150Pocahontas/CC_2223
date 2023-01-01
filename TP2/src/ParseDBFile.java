@@ -6,7 +6,7 @@ class ParseDBFile{
 
     String pathFile;
     String def;
-    String ttl;
+    static String ttl;
     String sp;
     String admin;
     int serial;
@@ -16,7 +16,7 @@ class ParseDBFile{
     List<String> mxValues;
     List<String> nsValues;
     List<String> extraValues;
-    int numOfEntries;
+    static int numOfEntries;
     List<String> entries;
     
     ParseDBFile(String fileName) {
@@ -83,7 +83,7 @@ class ParseDBFile{
         return def;
     }
 
-    public String getTTL(){
+    public static String getTTL(){
         return ttl;
     }
 
@@ -170,7 +170,7 @@ class ParseDBFile{
         return extraValues;
     }
 
-    public int getNumOfEntries(){
+    public static int getNumOfEntries(){
         return numOfEntries;
     }
 

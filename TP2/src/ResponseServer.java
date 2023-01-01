@@ -1,7 +1,4 @@
 import java.util.*;
-
-import javax.swing.text.GlyphView.GlyphPainter;
-
 import java.net.*;
 
 public class ResponseServer implements Runnable {
@@ -49,8 +46,11 @@ public class ResponseServer implements Runnable {
             InetAddress clientAddress = datagramPacket.getAddress();
             int clientPort = datagramPacket.getPort();
             datagramPacket = new DatagramPacket(dnsMessage, dnsMessage.length, clientAddress, clientPort);
+            System.out.println("sending 1");
             DatagramSocket datagramSocket = new DatagramSocket(datagramPacket.getPort());
+            System.out.println("sending 2");
             datagramSocket.send(datagramPacket);
+            System.out.println("sending 3");
             if(Server.DEBUG){
                 System.out.println("[Sent]: \n "+ response.toStringDebug());
             }
