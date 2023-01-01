@@ -58,15 +58,8 @@ public class ResponseServer implements Runnable {
                 System.out.println("[Sent]: \n "+ response);
             }
             System.out.println("Message sent to client");
-             
-
-            
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
-
-        
-        
     }
 }
