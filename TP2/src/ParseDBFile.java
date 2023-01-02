@@ -9,10 +9,10 @@ class ParseDBFile{
     static String ttl;
     String sp;
     String admin;
-    int serial;
-    int refresh;
-    int retry;
-    int expire;
+    String serial;
+    String refresh;
+    String retry;
+    String expire;
     List<String> mxValues;
     List<String> nsValues;
     List<String> extraValues;
@@ -28,6 +28,8 @@ class ParseDBFile{
         extraValues = new ArrayList<>();
         entries = new ArrayList<>();
         numOfEntries = 0;
+        cnamevalues = new ArrayList<>();
+        ptrvalues = new ArrayList<>();
     }
 
     public void parseFile() throws IOException{
@@ -65,13 +67,13 @@ class ParseDBFile{
                         }else if(words[1].equals("SOAADMIN")){
                             admin = words[2];
                         }else if(words[1].equals("SOASERIAL")){
-                            serial = Integer.parseInt(words[2]);
+                            serial = words[2];
                         }else if(words[1].equals("SOAREFRESH")){
-                            refresh =  Integer.parseInt(words[2]);
+                            refresh =  words[2];
                         }else if(words[1].equals("SOARETRY")){  
-                            retry =  Integer.parseInt(words[2]);
+                            retry =  words[2];
                         }else if(words[1].equals("SOAEXPIRE")){
-                            expire =  Integer.parseInt(words[2]);
+                            expire =  words[2];
                         }
                     }
                 }
@@ -103,19 +105,16 @@ class ParseDBFile{
         return admin;
     }
 
-    public int getSOASERIAL(){
+    public String getSOASERIAL(){
         return serial;
     }
-
-    public int getSOAREFRESH(){
+    public String getSOAREFRESH(){
         return refresh;
     }
-
-    public int getSOARETRY(){
+    public String getSOARETRY(){
         return retry;
-    }
-
-    public int getSOAEXPIRE(){
+    } 
+    public String getSOAEXPIRE(){
         return expire;
     }
 
@@ -134,6 +133,12 @@ class ParseDBFile{
     public int getNumExtra(){
         return extraValues.size();
     }
+    public List<String> getCnamevalues(){
+        return cnamevalues;
+    }
+    public List<String> getPtrvalues(){
+        return ptrvalues;
+    }
 
     public int getNumRV(String type){
         if(type.equals("DEFAULT")){
@@ -150,7 +155,7 @@ class ParseDBFile{
         else
             return 0;
     }
-
+    
     // get responsevalues
     public List<String> getResponseValues(String type){
         if(type.equals("DEFAULT")){
@@ -224,7 +229,6 @@ class ParseDBFile{
         entries.add(entry);
     }
 
-    //rewrite bd file
     public void rewriteFile(String fileName) throws IOException{
         try{                  
             File file = new File(fileName);
@@ -246,4 +250,10 @@ class ParseDBFile{
             System.out.println("File not found: " + e);
         }
     }
+
+    // to Integer 
+    public int toInt(String s){
+        return Integer.parseInt(s);
+    }
+
 }

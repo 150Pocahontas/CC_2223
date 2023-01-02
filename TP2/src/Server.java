@@ -39,8 +39,7 @@ public class Server {
         for(Pair p : configFile.getdbList()){
             ParseDBFile db = new ParseDBFile(p.getvalue());
             db.parseFile();
-            Server.cache.registerEntry(Server.cacheList, db.getDef(),"MX",db.getMX(), db.getTTL(), "FILE", Server.index, Server.cache.getStatus());
-            Server.cache.registerEntry(Server.cacheList, db.getDef(),"NS", db.getNS(), db.getTTL(), "FILE", Server.index, Server.cache.getStatus());
+            cache.addType(cacheList, db);
         }
         for(Pair log : configFile.getlogFile()){
             new WriteLog(log.getdomain(), log.getvalue());
@@ -65,6 +64,7 @@ public class Server {
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String query = reader.readLine();
+        
         while(!query.equals("exit")){
             if(reader.readLine() != null) query = reader.readLine();
             byte[] messageReceived = new byte[DNSmessage.MAX_SIZE_MESSAGE];

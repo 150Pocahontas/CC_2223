@@ -31,14 +31,11 @@ public class PrimaryServer implements Runnable {
                 String query = in.readLine();
                 System.out.println(query);
                 String[] querySplit = query.split(" ");
-                // Quando um SP arranca deve registar na cache todas as entradas dos seus ficheiros de bases de dados dos domínios para o qual é primário, utilizando repetidamente a função anterior com o campo Origin igual a FILE.
                 if (querySplit[0].equals("SOA")) {
-                    // String query = "SOA " + domain + " " + ipLocal + " " + port + " " +
-                    // db.getSOASERIAL();
                     if(ssList.contains(new Pair(querySplit[1], querySplit[2]))) {
                         ParseDBFile db = new ParseDBFile(Server.getBDName(dbList, querySplit[1]));
                         db.parseFile();
-                        if (Integer.parseInt(querySplit[4]) < db.getSOASERIAL()) {
+                        if (Integer.parseInt(querySplit[4]) < db.toInt(db.getSOASERIAL())) {
                             query = "SOA entries: " + db.getNumOfEntries();
                             System.out.println(query);
                             PrintWriter out = new PrintWriter(client.getOutputStream(), true);

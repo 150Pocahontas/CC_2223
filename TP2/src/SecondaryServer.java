@@ -31,7 +31,7 @@ public class SecondaryServer implements Runnable{
                 } else{
                     InetAddress ip = InetAddress.getLocalHost();
                     String ipLocal = ip.getHostAddress();
-                    this.db = new ParseDBFile("../files/SS/" + domain + "_" + ipLocal);
+                    this.db = new ParseDBFile("../files/Servidor2/" + domain + "_" + ipLocal);
                     query = "SOA " + domain + " " + ipLocal + " " + port + " " + 0;
                 }
                 try {
@@ -56,17 +56,17 @@ public class SecondaryServer implements Runnable{
                             db.addEntry(responseSplit2[1] + "\n");
                         }
                         db.rewriteFile(db.getPathFile());
-                        Thread thread = new Thread(removebd(db.getSOAEXPIRE()));
+                        Thread thread = new Thread(removebd(db.toInt(db.getSOAEXPIRE())));
                         thread.start();
                         Server.configFile.addDbFile(new Pair(domain,db.getPathFile()));
                         Server.cache.registerEntry(Server.cacheList, db.getDef(),"MX",db.getMXvalues(), db.getTTL(), "SP", Server.index, Server.cache.getStatus());
                         Server.cache.registerEntry(Server.cacheList, db.getDef(),"NS", db.getNSvalues(), db.getTTL(), "SP", Server.index, Server.cache.getStatus());
                     }
                     socket.close();
-                    Thread.sleep(db.getSOAREFRESH());
+                    Thread.sleep(db.toInt(db.getSOAREFRESH()));
                 } catch (Exception e) {
                     System.out.println("[Menssagem recebida] " + e.getMessage());
-                    Thread.sleep(db.getSOARETRY());
+                    Thread.sleep(db.toInt(db.getSOARETRY()));
                 }
                 
             }

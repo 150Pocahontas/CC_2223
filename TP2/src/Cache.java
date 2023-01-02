@@ -129,7 +129,7 @@ public class Cache {
        
     public void registerEntry(List<Cache> cache, String name, String type, List<String> value, String ttl, String origin, int index, String status){
         int i = index;
-        if(origin.equals("FILE") || origin.equals("SP")){
+        if(origin != null && (origin.equals("FILE") || origin.equals("SP"))){
             while(i < cache.size()){
                 if(cache.get(i).getStatus().equals("FREE")){
                     cache.get(i).setName(name);
@@ -144,7 +144,7 @@ public class Cache {
                 i++;
             }
             addStatus(cache,"FREE");
-        }else if(origin.equals("OTHERS")){
+        }else if(origin != null && origin.equals("OTHERS")){
             i = findEntry(cache, index, name, type);
             if(i < cache.size()){
                 if(cache.get(i).getOrigin().equals("OTHERS")){
@@ -172,7 +172,64 @@ public class Cache {
 
         
     }
+    public void addType(List<Cache> cache, ParseDBFile bd){
+        if(bd.getDef()!= null){
+            List<String> values = new ArrayList<String>();
+            values.add(bd.getDef());
+            registerEntry(cache, name, "DEFAULT", values, ttl, origin, index, status);
+        }
+        if(bd.getTTL()!= null){
+            List<String> values = new ArrayList<String>();
+            values.add(bd.getTTL());
+            registerEntry(cache, name, "TTL", values, ttl, origin, index, status);
+        }
+        if(bd.getSOASP() != null){
+            List<String> values = new ArrayList<String>();
+            values.add(bd.getSOASP());
+            registerEntry(cache, name, "SOASP", values, ttl, origin, index, status);
+        }
+        if(bd.getSOAADMIN() != null){
+            List<String> values = new ArrayList<String>();
+            values.add(bd.getSOAADMIN());
+            registerEntry(cache, name, "SOAADMIN", values, ttl, origin, index, status);
+        }
+        if(bd.getSOASERIAL() != null){
+            List<String> values = new ArrayList<String>();
+            values.add(bd.getSOASERIAL());
+            registerEntry(cache, name, "SOASERIAL", values, ttl, origin, index, status);
+        }
+        if(bd.getSOAREFRESH() != null){
+            List<String> values = new ArrayList<String>();
+            values.add(bd.getSOAREFRESH());
+            registerEntry(cache, name, "SOAREFRESH", values, ttl, origin, index, status);
+        }
+        if(bd.getSOARETRY() != null){
+            List<String> values = new ArrayList<String>();
+            values.add(bd.getSOARETRY());
+            registerEntry(cache, name, "SOARETRY", values, ttl, origin, index, status);
+        }
+        if(bd.getSOAEXPIRE() != null){
+            List<String> values = new ArrayList<String>();
+            values.add(bd.getSOAEXPIRE());
+            registerEntry(cache, name, "SOAEXPIRE", values, ttl, origin, index, status);
+        }
+        if(bd.getMXvalues()!= null){
+            registerEntry(cache, name, "MX", bd.getMXvalues(), ttl, origin, index, status);
+        }
+        if(bd.getNSvalues()!= null){
+            registerEntry(cache, name, "NS", bd.getNSvalues(), ttl, origin, index, status);
+        }
+        if(bd.getExtraValues()!= null){
+            registerEntry(cache, name, "A", bd.getExtraValues(), ttl, origin, index, status);
+        }
+        if(bd.getCnamevalues()!= null){
+            registerEntry(cache, name, "CNAME", bd.getCnamevalues(), ttl, origin, index, status);
+        }
+        if(bd.getPtrvalues()!= null){
+            registerEntry(cache, name, "PTR", bd.getPtrvalues(), ttl, origin, index, status);
+        }
     
+    }
     public void updateCache(List<Cache> cache, String name){
         int i = 0;
         while(i < cache.size()){
@@ -220,4 +277,17 @@ public class Cache {
             i++;
         }
     }
+
+    public List<Cache> getByName(List<Cache> cache, String name){
+        List<Cache> cacheList = new ArrayList<Cache>();
+        int i = 0;
+        while(i < cache.size()){
+            if(cache.get(i).getName().equals(name)){
+                cacheList.add(cache.get(i));
+            }
+            i++;
+        }
+        return cacheList;
+    }
+
 }
