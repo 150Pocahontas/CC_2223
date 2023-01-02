@@ -91,7 +91,7 @@ class ParseDBFile{
         return name;
     }
 
-    public static String getTTL(){
+    public String getTTL(){
         return ttl;
     }
 

@@ -59,8 +59,8 @@ public class SecondaryServer implements Runnable{
                         Thread thread = new Thread(removebd(db.getSOAEXPIRE()));
                         thread.start();
                         Server.configFile.addDbFile(new Pair(domain,db.getPathFile()));
-                        Server.cache.registerEntry(Server.cacheList, db.getDef(),"MX",db.getMX(), db.getTTL(), "SP", Server.index, Server.cache.getStatus());
-                        Server.cache.registerEntry(Server.cacheList, db.getDef(),"NS", db.getNS(), db.getTTL(), "SP", Server.index, Server.cache.getStatus());
+                        Server.cache.registerEntry(Server.cacheList, db.getDef(),"MX",db.getMXvalues(), db.getTTL(), "SP", Server.index, Server.cache.getStatus());
+                        Server.cache.registerEntry(Server.cacheList, db.getDef(),"NS", db.getNSvalues(), db.getTTL(), "SP", Server.index, Server.cache.getStatus());
                     }
                     socket.close();
                     Thread.sleep(db.getSOAREFRESH());
