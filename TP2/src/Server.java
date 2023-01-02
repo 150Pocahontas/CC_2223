@@ -40,8 +40,8 @@ public class Server {
         for(Pair p : configFile.getdbList()){
             ParseDBFile db = new ParseDBFile(p.getvalue());
             db.parseFile();
-            Server.cache.registerEntry(Server.cacheList, db.getDef(),"MX",db.getMX(), db.getTTL(), "FILE", Server.index);
-            Server.cache.registerEntry(Server.cacheList, db.getDef(),"NS", db.getNS(), db.getTTL(), "FILE", Server.index);
+            Server.cache.registerEntry(Server.cacheList, db.getDef(),"MX",db.getMX(), db.getTTL(), "FILE", Server.index, Server.cache.getStatus());
+            Server.cache.registerEntry(Server.cacheList, db.getDef(),"NS", db.getNS(), db.getTTL(), "FILE", Server.index, Server.cache.getStatus());
         }
         for(Pair log : configFile.getlogFile()){
             new WriteLog(log.getdomain(), log.getvalue());

@@ -57,8 +57,8 @@ public class SecondaryServer implements Runnable{
                     }
                     db.rewriteFile(db.getPathFile());
                     Server.configFile.addDbFile(new Pair(domain,db.getPathFile()));
-                    Server.cache.registerEntry(Server.cacheList, db.getDef(),"MX",db.getMX(), db.getTTL(), "SP", Server.index);
-                    Server.cache.registerEntry(Server.cacheList, db.getDef(),"NS", db.getNS(), db.getTTL(), "SP", Server.index);
+                    Server.cache.registerEntry(Server.cacheList, db.getDef(),"MX",db.getMX(), db.getTTL(), "SP", Server.index, Server.cache.getStatus());
+                    Server.cache.registerEntry(Server.cacheList, db.getDef(),"NS", db.getNS(), db.getTTL(), "SP", Server.index, Server.cache.getStatus());
                 }
                 socket.close();
             }

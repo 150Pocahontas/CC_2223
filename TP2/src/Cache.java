@@ -20,7 +20,7 @@ public class Cache {
         this.origin = null;
         this.timestamp = 0;
         this.index = 0;
-        this.status = null;
+        this.status = status;
     }
     // Constructor
     public Cache(String name, String type, List<String> value, String ttl, String origin, long timestamp, int index, String status){
@@ -129,7 +129,7 @@ public class Cache {
         return i;
     }
        
-    public void registerEntry(List<Cache> cache, String name, String type, List<String> value, String ttl, String origin, int index){
+    public void registerEntry(List<Cache> cache, String name, String type, List<String> value, String ttl, String origin, int index, String status){
         int i = index;
         if(origin.equals("FILE") || origin.equals("SP")){
             while(i < cache.size()){
@@ -145,7 +145,7 @@ public class Cache {
                 }
                 i++;
             }
-            cache.get(cache.size()).setStatus("FREE");
+            cache.get(cache.size()).addStatus(cache,"FREE");
         }else if(origin.equals("OTHERS")){
             i = findEntry(cache, index, name, type);
             if(i < cache.size()){
@@ -169,7 +169,7 @@ public class Cache {
                     i++;
                 }
             }
-            cache.get(cache.size()).setStatus("FREE");
+            cache.get(cache.size()).addStatus(cache,"FREE");
         }
 
         
@@ -203,4 +203,11 @@ public class Cache {
         }
         return answerList;
     }
+    //adiciona nova entrada na lista de caches com status FREE
+    public void addStatus(List<Cache> cache, String status){
+        Cache newCache = new Cache(status);
+        newCache.setStatus(status);
+        cache.add(newCache);
+    }
+
 }
