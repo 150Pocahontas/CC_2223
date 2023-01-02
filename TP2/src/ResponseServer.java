@@ -1,4 +1,7 @@
 import java.util.*;
+
+import javax.xml.transform.Source;
+
 import java.net.*;
 
 public class ResponseServer implements Runnable {
@@ -24,9 +27,17 @@ public class ResponseServer implements Runnable {
             else {
                 System.out.println("[Received]: \n "+ message);
             }
-            if(Server.cache.findEntry(Server.cacheList, Server.cacheList.size(), message.getName(),message.getTypeOfValue()) < Server.cacheList.size()){
+            
+            if(Server.cache.findEntry(Server.cacheList, message.getName(),message.getTypeOfValue()) < Server.cacheList.size()){
+                Cache c = Server.cacheList.get(Server.cache.findEntry(Server.cacheList, message.getName(),message.getTypeOfValue()));
+                Cache aV = Server.cacheList.get(Server.cache.findEntry(Server.cacheList, message.getName(),"NS"));
+                Cache eXV = Server.cacheList.get(Server.cache.findEntry(Server.cacheList, message.getName(),"A"));
                 System.out.println("entry found in cache");
-                DNSmessage response = new DNSmessage(message.getId(), message.getFlags(), message.getResponseCode(), message.getNumberOfExtra(), message.getNumberOfAuthorities(), message.getNumberOfExtra(), message.getName(), message.getTypeOfValue(), Server.cache.getAnswerList(Server.cacheList, Server.cacheList.size(), message.getName(),message.getTypeOfValue()),null, null);
+                int[] flags = new int[3];
+                flags[0] = 0;
+                flags[1] = message.getFlags()[1];
+                flags[2] = 1;
+                DNSmessage response = new DNSmessage(message.getId(), flags, 0, c.getValue().size(),aV.getValue().size() , eXV.getValue().size(), message.getName(), message.getTypeOfValue(), c.getValue(),aV.getValue(), eXV.getValue());
                 dnsMessage = response.toByteArray();
                 System.out.println("Sending message to client");
                 InetAddress clientAddress = datagramPacket.getAddress();
@@ -75,7 +86,7 @@ public class ResponseServer implements Runnable {
                     System.out.println("[Sent]: \n "+ response);
                 }
                 System.out.println("Message sent to client");
-            }
+        }
             
         } catch (Exception e) {
             e.printStackTrace();

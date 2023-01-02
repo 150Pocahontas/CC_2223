@@ -11,13 +11,6 @@ public class Cache {
     private String status; // Free, Valid
     
     public Cache(String status){
-        this.name = null;
-        this.type = null;
-        this.value = null;
-        this.ttl = null;
-        this.origin = null;
-        this.timestamp = 0;
-        this.index = 0;
         this.status = status;
     }
     // Constructor
@@ -109,7 +102,8 @@ public class Cache {
     }
      
     // retorna o indice da entrada correspondentes
-    public int findEntry(List<Cache> cache, int index, String name, String type){
+    public int findEntry1(List<Cache> cache, int index, String name, String type){
+        System.out.println(type);
         int i = index;
         while(i < cache.size()){
             if(cache.get(i).getStatus().equals("VALID")){
@@ -118,7 +112,7 @@ public class Cache {
                         cache.get(i).setStatus("FREE");
                     }
                 }
-                if(cache.get(i).getName().equals(name) && cache.get(i).getType().equals(type)){
+                if (cache.get(i).getName().equals(name) && cache.get(i).getType().equals(type)){
                     return i;
                 }
             }
@@ -126,11 +120,23 @@ public class Cache {
         }
         return i;
     }
+    public int findEntry(List<Cache> cache, String name, String type){
+        for(int i = 0; i < cache.size(); i++){
+            if(cache.get(i).getStatus().equals("VALID")){
+                if (cache.get(i).getName().equals(name) && cache.get(i).getType().equals(type)){
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
        
     public void registerEntry(List<Cache> cache, String name, String type, List<String> value, String ttl, String origin, int index, String status){
         int i = index;
-        if(origin != null && (origin.equals("FILE") || origin.equals("SP"))){
+        if((origin.equals("FILE") || origin.equals("SP"))){
+
             while(i < cache.size()){
+
                 if(cache.get(i).getStatus().equals("FREE")){
                     cache.get(i).setName(name);
                     cache.get(i).setType(type);
@@ -139,13 +145,11 @@ public class Cache {
                     cache.get(i).setOrigin(origin);
                     cache.get(i).setTimestamp(System.currentTimeMillis());
                     cache.get(i).setStatus("VALID");
-                    break;
                 }
                 i++;
             }
-            addStatus(cache,"FREE");
-        }else if(origin != null && origin.equals("OTHERS")){
-            i = findEntry(cache, index, name, type);
+        }else if(origin.equals("OTHERS")){
+            i = findEntry1(cache, index, name, type);
             if(i < cache.size()){
                 if(cache.get(i).getOrigin().equals("OTHERS")){
                     cache.get(i).setTimestamp(System.currentTimeMillis());
@@ -162,71 +166,88 @@ public class Cache {
                         cache.get(i).setOrigin(origin);
                         cache.get(i).setTimestamp(System.currentTimeMillis());
                         cache.get(i).setStatus("VALID");
-                        break;
                     }
                     i++;
                 }
             }
-            addStatus(cache,"FREE");
         }
-
-        
+        addStatus(cache, "FREE", i);
     }
-    public void addType(List<Cache> cache, ParseDBFile bd){
-        if(bd.getDef()!= null){
+
+    public void addType(List<Cache> cache, ParseDBFile bd, String origins){
+        int index = 0;
+        
+        String[] split = bd.getDef().split("\\.");
+        String name = split[0]+ "." + split[1];
+        String ttl = bd.getTTL();
+        String status = "VALID";
+        if(name!= null){
             List<String> values = new ArrayList<String>();
             values.add(bd.getDef());
-            registerEntry(cache, name, "DEFAULT", values, ttl, origin, index, status);
+            registerEntry(cache, name, "DEFAULT", values, ttl, origins, index, status);
+            index++;
         }
-        if(bd.getTTL()!= null){
+        if(ttl!= null){
             List<String> values = new ArrayList<String>();
             values.add(bd.getTTL());
-            registerEntry(cache, name, "TTL", values, ttl, origin, index, status);
+            registerEntry(cache, name, "TTL", values, ttl, origins, index, status);
+            index++;
         }
         if(bd.getSOASP() != null){
             List<String> values = new ArrayList<String>();
             values.add(bd.getSOASP());
-            registerEntry(cache, name, "SOASP", values, ttl, origin, index, status);
+            registerEntry(cache, name, "SOASP", values, ttl, origins, index, status);
+            index++;
         }
         if(bd.getSOAADMIN() != null){
             List<String> values = new ArrayList<String>();
             values.add(bd.getSOAADMIN());
-            registerEntry(cache, name, "SOAADMIN", values, ttl, origin, index, status);
+            registerEntry(cache, name, "SOAADMIN", values, ttl, origins, index, status);
+            index++;
         }
         if(bd.getSOASERIAL() != null){
             List<String> values = new ArrayList<String>();
             values.add(bd.getSOASERIAL());
-            registerEntry(cache, name, "SOASERIAL", values, ttl, origin, index, status);
+            registerEntry(cache, name, "SOASERIAL", values, ttl, origins, index, status);
+            index++;
         }
         if(bd.getSOAREFRESH() != null){
             List<String> values = new ArrayList<String>();
             values.add(bd.getSOAREFRESH());
-            registerEntry(cache, name, "SOAREFRESH", values, ttl, origin, index, status);
+            registerEntry(cache, name, "SOAREFRESH", values, ttl, origins, index, status);
+            index++;
         }
         if(bd.getSOARETRY() != null){
             List<String> values = new ArrayList<String>();
             values.add(bd.getSOARETRY());
-            registerEntry(cache, name, "SOARETRY", values, ttl, origin, index, status);
+            registerEntry(cache, name, "SOARETRY", values, ttl, origins, index, status);
+            index++;
         }
         if(bd.getSOAEXPIRE() != null){
             List<String> values = new ArrayList<String>();
             values.add(bd.getSOAEXPIRE());
-            registerEntry(cache, name, "SOAEXPIRE", values, ttl, origin, index, status);
+            registerEntry(cache, name, "SOAEXPIRE", values, ttl, origins, index, status);
+            index++;
         }
         if(bd.getMXvalues()!= null){
-            registerEntry(cache, name, "MX", bd.getMXvalues(), ttl, origin, index, status);
+            registerEntry(cache, name, "MX", bd.getMXvalues(), ttl, origins, index, status);
+            index++;
         }
         if(bd.getNSvalues()!= null){
-            registerEntry(cache, name, "NS", bd.getNSvalues(), ttl, origin, index, status);
+            registerEntry(cache, name, "NS", bd.getNSvalues(), ttl, origins, index, status);
+            index++;
         }
         if(bd.getExtraValues()!= null){
-            registerEntry(cache, name, "A", bd.getExtraValues(), ttl, origin, index, status);
+            registerEntry(cache, name, "A", bd.getExtraValues(), ttl, origins, index, status);
+            index++;
         }
         if(bd.getCnamevalues()!= null){
-            registerEntry(cache, name, "CNAME", bd.getCnamevalues(), ttl, origin, index, status);
+            registerEntry(cache, name, "CNAME", bd.getCnamevalues(), ttl, origins, index, status);
+            index++;
         }
         if(bd.getPtrvalues()!= null){
-            registerEntry(cache, name, "PTR", bd.getPtrvalues(), ttl, origin, index, status);
+            registerEntry(cache, name, "PTR", bd.getPtrvalues(), ttl, origins, index, status);
+            index++;
         }
     
     }
@@ -248,23 +269,12 @@ public class Cache {
         }
     }
 
-    public List<String> getAnswerList(ArrayList<Cache> cacheList, int size, String name2, String typeOfValue) {
-        List<String> answerList = new ArrayList<String>();
-        int i = 0;
-        while(i < cacheList.size()){
-            if(cacheList.get(i).getName().equals(name2) && cacheList.get(i).getType().equals(typeOfValue)){
-                answerList.add(cacheList.get(i).getValue().get(0));
-            }
-            i++;
-        }
-        return answerList;
-    }
-
+    
     //adiciona nova entrada na lista de caches com status FREE
-    public void addStatus(List<Cache> cache, String status){
-        Cache newCache = new Cache(status);
+    public void addStatus(List<Cache> cache, String status, int index){
+        Cache newCache = new Cache("FREE");
         newCache.setStatus(status);
-        cache.add(newCache);
+        cache.add(index, newCache);
     }
 
     //torna cahe free
@@ -289,5 +299,6 @@ public class Cache {
         }
         return cacheList;
     }
+   
 
 }

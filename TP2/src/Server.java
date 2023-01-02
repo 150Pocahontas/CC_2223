@@ -39,8 +39,9 @@ public class Server {
         for(Pair p : configFile.getdbList()){
             ParseDBFile db = new ParseDBFile(p.getvalue());
             db.parseFile();
-            cache.addType(cacheList, db);
+            cache.addType(cacheList, db, "FILE");
         }
+        
         for(Pair log : configFile.getlogFile()){
             new WriteLog(log.getdomain(), log.getvalue());
         } 
@@ -61,12 +62,7 @@ public class Server {
         }
         System.out.println("Server is running");
 
-
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        String query = reader.readLine();
-        
-        while(!query.equals("exit")){
-            if(reader.readLine() != null) query = reader.readLine();
+        while(!EXIT){
             byte[] messageReceived = new byte[DNSmessage.MAX_SIZE_MESSAGE];
             DatagramPacket datagramPacket = new DatagramPacket(messageReceived, messageReceived.length);
             System.out.println("Waiting for a socket");
@@ -74,8 +70,12 @@ public class Server {
             Thread thread = new Thread(new ResponseServer(datagramPacket, messageReceived ,configFile.getdbList()));
             thread.start();
         }
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        String query = reader.readLine();
 
-        
+        while(!query.equals("exit")){
+            query = reader.readLine();
+        }
         ds.close();
         System.out.println("Pedido de encerramento enviado\n");
         Thread.sleep(1000);
