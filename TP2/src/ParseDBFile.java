@@ -134,9 +134,11 @@ class ParseDBFile{
     public int getNumExtra(){
         return extraValues.size();
     }
+
     public List<String> getCnamevalues(){
         return cnamevalues;
     }
+
     public List<String> getPtrvalues(){
         return ptrvalues;
     }
@@ -144,20 +146,40 @@ class ParseDBFile{
     public int getNumRV(String type){
         if(type.equals("DEFAULT")){
             return 1;
-        }else{
-
-        }
+        }else if(type.equals("TTL")){
+            return 1;
+        }else if(type.equals("SOASP")){
+            return 1;
+        }else if(type.equals("SOAADMIN")){
+            return 1;
+        }else if(type.equals("SOASERIAL")){
+            return 1;
+        }else if(type.equals("SOAREFRESH")){
+            return 1;
+        }else if(type.equals("SOARETRY")){
+            return 1;
+        }else if(type.equals("SOAEXPIRE")){
+            return 1;
+        }else if(type.equals("MX")){
+            return mxValues.size();
+        }else if(type.equals("NS")){
+            return nsValues.size();
+        }else if(type.equals("A")){
+            return extraValues.size();
+        }else if(type.equals("CNAME")){
+            return cnamevalues.size();
+        }else if(type.equals("PTR")){
+            return ptrvalues.size();
+        }       
         return 0;
     }
 
     public int getNumNS(){
         if(nsValues != null)
             return nsValues.size();
-        else
-            return 0;
+        return 0;
     }
     
-    // get responsevalues
     public List<String> getResponseValues(String type){
         if(type.equals("DEFAULT")){
             //crete new list and add item
@@ -206,14 +228,6 @@ class ParseDBFile{
         return null;
     }
 
-    //get autoritativevalues
-    public List<String> getAuthoritativeValues(String tipo){
-        if(nsValues != null){
-            return mxValues;
-        }
-        return null;
-    }
-
     public int getNumOfEntries(){
         return numOfEntries;
     }
@@ -252,7 +266,6 @@ class ParseDBFile{
         }
     }
 
-    // to Integer 
     public int toInt(String s){
         return Integer.parseInt(s);
     }

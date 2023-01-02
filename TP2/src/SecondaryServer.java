@@ -1,6 +1,6 @@
 import java.io.*;
 import java.net.*;
-import java.util.ArrayList;
+import java.util.*;
 
 public class SecondaryServer implements Runnable{
     private String domain;
@@ -38,6 +38,12 @@ public class SecondaryServer implements Runnable{
                     Socket socket = new Socket(ipPrimary,port);
                     PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
                     out.println(query);
+                    WriteLog writeLog = new WriteLog(Server.getvalue(Server.configFile.getlogFile(), domain));
+                    String date = Server.sdf.format(new Date());
+                    writeLog.write(date + " ZT iniciada" + ipPrimary + " SP " + db.getPathFile());
+                    writeLog = new WriteLog(Server.getvalue(Server.configFile.getlogFile(), "all"));
+                    date = Server.sdf.format(new Date());
+                    writeLog.write(date + " ZT ininiada" + ipPrimary + " SP " + db.getPathFile());
                     BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                     String response = in.readLine();
                     if(response.equals("Serial number is the same")){
@@ -55,6 +61,12 @@ public class SecondaryServer implements Runnable{
                             String[] responseSplit2 = response.split(": ");
                             db.addEntry(responseSplit2[1] + "\n");
                         }
+                        writeLog = new WriteLog(Server.getvalue(Server.configFile.getlogFile(), domain));
+                        date = Server.sdf.format(new Date());
+                        writeLog.write(date + " ZT terminada" + ipPrimary + " SP " + db.getPathFile());
+                        writeLog = new WriteLog(Server.getvalue(Server.configFile.getlogFile(), "all"));
+                        date = Server.sdf.format(new Date());
+                        writeLog.write(date + " ZT terminada" + ipPrimary + " SP " + db.getPathFile());
                         db.rewriteFile(db.getPathFile());
                         Thread thread = new Thread(removebd(db.toInt(db.getSOAEXPIRE())));
                         thread.start();

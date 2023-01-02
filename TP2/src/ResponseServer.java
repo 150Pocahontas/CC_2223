@@ -6,7 +6,6 @@ public class ResponseServer implements Runnable {
     private byte[] dnsMessage;
     private List<Pair> dbList;
 
-    //cosntructor
     public ResponseServer(DatagramPacket datagramPacket, byte[] dnsMessage ,List<Pair> dbList) {
         this.datagramPacket = datagramPacket;
         this.dnsMessage = dnsMessage;
@@ -16,8 +15,14 @@ public class ResponseServer implements Runnable {
     public void run() {
         try {
             DNSmessage message = new DNSmessage(dnsMessage);
+            WriteLog writeLog = new WriteLog(Server.getvalue(Server.configFile.getlogFile(), message.getName()));
+            String date = Server.sdf.format(new Date());
+            writeLog.write(date + " QR " + datagramPacket.getAddress() + " " + message.toStringDebug());
+            writeLog = new WriteLog(Server.getvalue(Server.configFile.getlogFile(), "all"));
+            date = Server.sdf.format(new Date());
+            writeLog.write(date + " QR  " + message.toStringDebug());
             if(Server.DEBUG){
-                System.out.println("[Received]: \n "+ message.toStringDebug());
+                System.out.println("[Received]: \n "+ datagramPacket.getAddress() + " " + message.toStringDebug());
             }
             else {
                 System.out.println("[Received]: \n "+ message);

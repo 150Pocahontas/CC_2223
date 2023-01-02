@@ -36,11 +36,11 @@ public class PrimaryServer implements Runnable {
                         db.parseFile();
                         WriteLog writeLog = new WriteLog(Server.getvalue(Server.configFile.getlogFile(), db.getDef()));
                         String date = Server.sdf.format(new Date());
-                        writeLog.write(date + " EV @ conf-file-read " + db.getPathFile());
+                        writeLog.write(date + " EV @ db-file-read " + db.getPathFile());
                         writeLog = new WriteLog(Server.getvalue(Server.configFile.getlogFile(), "all"));
                         date = Server.sdf.format(new Date());
-                        writeLog.write(date + " EV @ conf-file-read " + db.getPathFile());
-                        if (Integer.parseInt(querySplit[4]) < toInt(db.getSOASERIAL())) {
+                        writeLog.write(date + " EV @ db-file-read " + db.getPathFile());
+                        if (Integer.parseInt(querySplit[4]) < db.toInt(db.getSOASERIAL())) {
                             query = "SOA entries: " + db.getNumOfEntries();
                             System.out.println(query);
                             PrintWriter out = new PrintWriter(client.getOutputStream(), true);
@@ -51,10 +51,10 @@ public class PrimaryServer implements Runnable {
                             if (query.equals("OK: " + db.getNumOfEntries())) {
                                 writeLog = new WriteLog(Server.getvalue(Server.configFile.getlogFile(), querySplit[1]));
                                 date = Server.sdf.format(new Date());
-                                writeLog.write(date + " ZT " + querySplit[2] + " SP " + db.getPathFile());
+                                writeLog.write(date + " ZT inicalizada" + querySplit[2] + " SP " + db.getPathFile());
                                 writeLog = new WriteLog(Server.getvalue(Server.configFile.getlogFile(), "all"));
                                 date = Server.sdf.format(new Date());
-                                writeLog.write(date + " ZT " + querySplit[2] + " SP " + db.getPathFile());
+                                writeLog.write(date + " ZT inicializada" + querySplit[2] + " SP " + db.getPathFile());
                                 int i = 1;
                                 for (String entry : db.getEntries()) {
                                     query = i + ": " + entry;
@@ -68,12 +68,24 @@ public class PrimaryServer implements Runnable {
                             out.println("Serial number is the same");
                             System.out.println("Serial number is the same");   
                         }
+                        writeLog = new WriteLog(Server.getvalue(Server.configFile.getlogFile(), querySplit[1]));
+                        date = Server.sdf.format(new Date());
+                        writeLog.write(date + " ZT terminada" + querySplit[2] + " SP " + db.getPathFile());
+                        writeLog = new WriteLog(Server.getvalue(Server.configFile.getlogFile(), "all"));
+                        date = Server.sdf.format(new Date());
+                        writeLog.write(date + " ZT terminada" + querySplit[2] + " SP " + db.getPathFile());
                         client.close();
                         socket.close();
                         System.out.println("Client closed");
                     } else {
                         PrintWriter out = new PrintWriter(client.getOutputStream(), true);
                         out.println("Domain not found or Server not permited");
+                        WriteLog writeLog = new WriteLog(Server.getvalue(Server.configFile.getlogFile(), querySplit[1]));
+                        String date = Server.sdf.format(new Date());
+                        writeLog.write(date + " ZT " + querySplit[2] + " SP Domain not found" );
+                        writeLog = new WriteLog(Server.getvalue(Server.configFile.getlogFile(), "all"));
+                        date = Server.sdf.format(new Date());
+                        writeLog.write(date + " ZT " + querySplit[2] + " SP domain not found");
                         client.close();
                         socket.close();
                         System.out.println("Client closed");
