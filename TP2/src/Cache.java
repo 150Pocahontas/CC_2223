@@ -145,7 +145,7 @@ public class Cache {
                 }
                 i++;
             }
-            cache.get(cache.size()).addStatus(cache,"FREE");
+            addStatus(cache,"FREE");
         }else if(origin.equals("OTHERS")){
             i = findEntry(cache, index, name, type);
             if(i < cache.size()){
@@ -169,7 +169,7 @@ public class Cache {
                     i++;
                 }
             }
-            cache.get(cache.size()).addStatus(cache,"FREE");
+            addStatus(cache,"FREE");
         }
 
         
