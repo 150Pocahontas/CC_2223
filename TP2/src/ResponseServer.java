@@ -40,10 +40,7 @@ public class ResponseServer implements Runnable {
                 else {
                     System.out.println("[Sent]: \n "+ response);
                 }
-                System.out.println("Message sent to client");
-                return;
-            }
-            else{
+            }else{
                 System.out.println("entry not found in cache");
                 DNSmessage response = null;
                 String type = message.getTypeOfValue();

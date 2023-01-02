@@ -1,6 +1,4 @@
-import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Cache {
     private String name;
@@ -222,5 +220,4 @@ public class Cache {
             i++;
         }
     }
-
 }
