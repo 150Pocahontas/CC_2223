@@ -114,4 +114,8 @@ class ParseConfigFile{
     public void addDbFile(Pair dbFile){
         this.dbFile.add(dbFile);
     }
+
+    public void removeDbFile(Pair dbFile){
+        this.dbFile.remove(dbFile);
+    }
 }

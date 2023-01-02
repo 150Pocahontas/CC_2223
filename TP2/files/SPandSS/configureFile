@@ -1,5 +1,5 @@
 # Configuration file for primary server for pl602.us_10..3.3.1
-example.com DB ../files/SPandSS/pl602.us_10..3.3.1
+example.com DB ../files/SPandSS/pl602.us_10..3.3.1.bd
 #tem copia do example.com
 example.com SP 10.2.2.1
 example.com DD 127.0.0.1

@@ -2,7 +2,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.net.*;
-import java.sql.Time;
 
 /**
  * Classe que implementa um Servidor
@@ -33,7 +32,7 @@ public class Server {
             index = 1;
         } 
         configFile = new ParseConfigFile(args[index]);
-        try (DatagramSocket ds = new DatagramSocket(8080)) {
+        DatagramSocket ds = new DatagramSocket(8080);
             for(Pair log : configFile.getlogFile()){
                 new WriteLog(log.getdomain(), log.getvalue());
             } 
@@ -47,7 +46,6 @@ public class Server {
                     Thread secondaryServer = new Thread(new SecondaryServer(ss.getdomain(), ss.getvalue(), "8080"));
                     secondaryServer.start();
                 }
-                //Quando um SS arranca deve fazer uma transferência de zona dos SP respetivos e deve registar na sua cache todas as entradas recebidas do SP, utilizando repetidamente a função anterior com o campo Origin igual a SP.
                 for(Pair db : configFile.getdbList()){
                     if(db.getdomain().equals(ss.getdomain())){
                         for (Cache cache : cacheList){
@@ -72,40 +70,24 @@ public class Server {
                         }
                     }
                 }
-                
             }
             
+            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+            String query = reader.readLine();
 
-            System.out.println("Server is running");
-    
-            while(!EXIT){
+            while(!query.equals("exit")){
+                query = reader.readLine();
                 byte[] messageReceived = new byte[DNSmessage.MAX_SIZE_MESSAGE];
                 DatagramPacket datagramPacket = new DatagramPacket(messageReceived, messageReceived.length);
                 System.out.println("Waiting for a socket");
                 ds.receive(datagramPacket);
                 Thread thread = new Thread(new ResponseServer(datagramPacket, messageReceived ,configFile.getdbList()));
                 thread.start();
-                int timeStamp = (int) System.currentTimeMillis() - start;
-                InetAddress value = datagramPacket.getAddress();
-                Cache cache = new Cache(DNSmessage.getName(), DNSmessage.getTypeOfValue(), value, ParseDBFile.getTTL(), "OTHERS", timeStamp, entry, "FREE");
-                cacheList.add(cache);
-                cache.findEntry(cacheList, cache.getIndex(), cache.getName(), cache.getType());
+                
             }
-        } catch (SocketException e) {
-            System.out.println("Socket: " + e.getMessage());
-        } catch (IOException e) {
-            System.out.println("IO: " + e.getMessage());
-    }
-        
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        String query = reader.readLine();
 
-        while(!query.equals("exit")){
-            query = reader.readLine();
-        }
-
-        System.out.println("Pedido de encerramento enviado\n");
-
+            EXIT = true;
+            
         Thread.sleep(1000);
         System.exit(0);
     }    

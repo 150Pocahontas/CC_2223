@@ -200,11 +200,11 @@ public class DNSmessage implements Serializable {
         return numberOfExtra;
     }
 
-    public static String getName() {
+    public String getName() {
         return name;
     }
 
-    public static String getTypeOfValue() {
+    public String getTypeOfValue() {
         return typeOfValue;
     }
 

@@ -5,7 +5,7 @@ import java.nio.charset.StandardCharsets;
 class ParseDBFile{
 
     String pathFile;
-    String def;
+    String name;
     static String ttl;
     String sp;
     String admin;
@@ -16,6 +16,8 @@ class ParseDBFile{
     List<String> mxValues;
     List<String> nsValues;
     List<String> extraValues;
+    List<String> cnamevalues;
+    List<String> ptrvalues;
     static int numOfEntries;
     List<String> entries;
     
@@ -42,16 +44,22 @@ class ParseDBFile{
                         if(words[0].equals("TTL"))
                             if(words[2] == null) ttl = "0";
                             else ttl = words[2];
-                        else if(words[1].equals("A"))// || words[1].equals("CNAME")
-                            extraValues.add(words[0] + def + " A " + words[2] + " " + ttl);
+                        else if(words[1].equals("A"))
+                            extraValues.add(words[0] + name + " A " + words[2] + " " + ttl);
+                        else if(words[1].equals("CNAME")){
+                            cnamevalues.add(words[0] + name + " CNAME " + words[2] + " " + ttl);
+                        }else if(words[1].equals("PRT")){
+                            ptrvalues.add(words[0] + name + " PTR " + words[2] + " " + ttl);
+                        }
+
                     }else {
                         if(!words[1].equals("DEFAULT")){}
                         if(words[1].equals("MX")){
-                            mxValues.add(def + " MX " + words[2] + " " + ttl);
+                            mxValues.add(name + " MX " + words[2] + " " + ttl);
                         }else if(words[1].equals("NS")){
-                            nsValues.add(def + " NS " + words[2] + " " + ttl);
+                            nsValues.add(name + " NS " + words[2] + " " + ttl);
                         } else if(words[1].equals("DEFAULT")){
-                            def = words[2];
+                            name = words[2];
                         }else if(words[1].equals("SOASP")){
                             sp = words[2];
                         }else if(words[1].equals("SOAADMIN")){
@@ -80,7 +88,7 @@ class ParseDBFile{
     }
 
     public String getDef(){
-        return def;
+        return name;
     }
 
     public static String getTTL(){
@@ -111,13 +119,15 @@ class ParseDBFile{
         return expire;
     }
 
-    public List<String> getMX(){
+    public List<String> getMXvalues(){
         return mxValues;
     }
-    public List<String> getNS(){
+
+    public List<String> getNSvalues(){
         return nsValues;
     }
-    public List<String> getExtra(){
+
+    public List<String> getExtraValues(){
         return extraValues;
     }
 
@@ -126,48 +136,76 @@ class ParseDBFile{
     }
 
     public int getNumRV(String type){
-        if(type.equals("MX"))
-            return mxValues.size();
-        else if(type.equals("NS"))
-            return nsValues.size();
-        else
-            return 0;
+        if(type.equals("DEFAULT")){
+            return 1;
+        }else{
+
+        }
+        return 0;
     }
-    public int getNumAV(String tipo){
-        if(!(tipo.equals("MX")))
-            return mxValues.size();
-        else if(!(tipo.equals("NS")))
+
+    public int getNumNS(){
+        if(nsValues != null)
             return nsValues.size();
         else
             return 0;
     }
 
     // get responsevalues
-    public List<String> getResponseValues(String tipo){
-        if(tipo.equals("MX")){
+    public List<String> getResponseValues(String type){
+        if(type.equals("DEFAULT")){
+            //crete new list and add item
+            List<String> list = new ArrayList<>();
+            list.add("DEFAULT example.com.");
+            return list;
+        }else if(type.equals("TTL")){
+            List<String> list = new ArrayList<>();
+            list.add("TTL " + ttl);
+            return list;
+        }else if(type.equals("SOASP")){
+            List<String> list = new ArrayList<>();
+            list.add("SOASP " + sp);
+            return list;
+        }else if(type.equals("SOAADMIN")){
+            List<String> list = new ArrayList<>();
+            list.add("SOAADMIN " + admin);
+            return list;
+        }else if(type.equals("SOASERIAL")){
+            List<String> list = new ArrayList<>();
+            list.add("SOASERIAL " + serial);
+            return list;
+        }else if(type.equals("SOAREFRESH")){
+            List<String> list = new ArrayList<>();
+            list.add("SOAREFRESH " + refresh);
+            return list;
+        }else if(type.equals("SOARETRY")){
+            List<String> list = new ArrayList<>();
+            list.add("SOARETRY " + retry);
+            return list;
+        }else if(type.equals("SOAEXPIRE")){
+            List<String> list = new ArrayList<>();
+            list.add("SOAEXPIRE " + expire);
+            return list;
+        }else if(type.equals("MX")){
             return mxValues;
-        }
-        else if(tipo.equals("NS")){
+        }else if(type.equals("NS")){
             return nsValues;
+        }else if(type.equals("CNAME")){
+            return cnamevalues;
+        }else if(type.equals("PTR")){
+            return ptrvalues;
+        }else if(type.equals("A")){
+            return extraValues;
         }
-        else
-            return null;
+        return null;
     }
 
     //get autoritativevalues
     public List<String> getAuthoritativeValues(String tipo){
-        if(tipo.equals("MX")){
-            return nsValues;
-        }
-        else if(tipo.equals("NS")){
+        if(nsValues != null){
             return mxValues;
         }
-        else
-            return null;
-    }
-
-    public List<String> getExtraValues(){
-        return extraValues;
+        return null;
     }
 
     public static int getNumOfEntries(){
@@ -208,7 +246,4 @@ class ParseDBFile{
             System.out.println("File not found: " + e);
         }
     }
-
-
-
 }
