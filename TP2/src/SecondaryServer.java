@@ -24,7 +24,6 @@ public class SecondaryServer implements Runnable{
                 String query;
                 if(db != null){
                     db.parseFile();
-                    Thread.sleep(db.getSOAREFRESH());
                     InetAddress ip = InetAddress.getLocalHost();
                     String ipLocal = ip.getHostAddress();
                     query = "SOA " + domain + " " + ipLocal + " " + port + " " + db.getSOASERIAL();
@@ -62,9 +61,9 @@ public class SecondaryServer implements Runnable{
                         Server.configFile.addDbFile(new Pair(domain,db.getPathFile()));
                         Server.cache.registerEntry(Server.cacheList, db.getDef(),"MX",db.getMX(), db.getTTL(), "SP", Server.index, Server.cache.getStatus());
                         Server.cache.registerEntry(Server.cacheList, db.getDef(),"NS", db.getNS(), db.getTTL(), "SP", Server.index, Server.cache.getStatus());
-                
                     }
                     socket.close();
+                    Thread.sleep(db.getSOAREFRESH());
                 } catch (Exception e) {
                     System.out.println("[Menssagem recebida] " + e.getMessage());
                     Thread.sleep(db.getSOARETRY());
@@ -80,9 +79,8 @@ public class SecondaryServer implements Runnable{
     
     public Runnable removebd(int time) throws InterruptedException{
         Thread.sleep(time);
-        //remove db from list of server
         Server.configFile.removeDbFile(new Pair(domain,db.getPathFile()));
-        //turn entry in cache free
+        Server.cache.freeCache(Server.cacheList, domain);
         return null;
     }
 }

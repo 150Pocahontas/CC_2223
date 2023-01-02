@@ -192,6 +192,7 @@ public class Cache {
             i++;
         }
     }
+
     public List<String> getAnswerList(ArrayList<Cache> cacheList, int size, String name2, String typeOfValue) {
         List<String> answerList = new ArrayList<String>();
         int i = 0;
@@ -203,11 +204,23 @@ public class Cache {
         }
         return answerList;
     }
+
     //adiciona nova entrada na lista de caches com status FREE
     public void addStatus(List<Cache> cache, String status){
         Cache newCache = new Cache(status);
         newCache.setStatus(status);
         cache.add(newCache);
+    }
+
+    //torna cahe free
+    public void freeCache(List<Cache> cache, String name){
+        int i = 0;
+        while(i < cache.size()){
+            if(cache.get(i).getName().equals(name)){
+                cache.get(i).setStatus("FREE");
+            }
+            i++;
+        }
     }
 
 }
