@@ -9,8 +9,6 @@ public class ResponseServer implements Runnable {
     private byte[] dnsMessage;
     private List<Pair> dbList;
 
-    
-
     //cosntructor
     public ResponseServer(DatagramPacket datagramPacket, byte[] dnsMessage ,List<Pair> dbList) {
         this.datagramPacket = datagramPacket;
@@ -62,8 +60,8 @@ public class ResponseServer implements Runnable {
                 flags[0] = 0;
                 flags[1] = 1;
                 flags[2] = 0; 
-                if(Server.getBDName(dbList, message.getName()) != null){
-                    ParseDBFile db = new ParseDBFile(Server.getBDName(dbList, message.getName()));
+                if(Server.getvalue(dbList, message.getName()) != null){
+                    ParseDBFile db = new ParseDBFile(Server.getvalue(dbList, message.getName()));
                     db.parseFile();
                     response = new DNSmessage(message.getId(), flags, 0, db.getNumRV(type), db.getNumNS(), db.getNumExtra(), message.getName(), message.getTypeOfValue(), db.getResponseValues(type) ,db.getAuthoritativeValues(type), db.getExtraValues());
                 }else{

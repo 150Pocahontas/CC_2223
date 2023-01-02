@@ -7,7 +7,6 @@ import java.io.*;
  */
 public class PrimaryServer implements Runnable {
     private List<Pair> ssList;
-    private List<Pair> dbList;
 
     /**
      * Contrutor do Servidor Primário
@@ -15,9 +14,8 @@ public class PrimaryServer implements Runnable {
      * @throws IOException
      * 
      */
-    public PrimaryServer(ArrayList<Pair> ssList, ArrayList<Pair> dbList) throws IOException {
+    public PrimaryServer(ArrayList<Pair> ssList) throws IOException {
         this.ssList = ssList;
-        this.dbList = dbList;
     }
 
     public void run() {
@@ -32,10 +30,17 @@ public class PrimaryServer implements Runnable {
                 System.out.println(query);
                 String[] querySplit = query.split(" ");
                 if (querySplit[0].equals("SOA")) {
+                    // String query = "SOA " + domain + " " + ipLocal + " " + port + " " +
                     if(ssList.contains(new Pair(querySplit[1], querySplit[2]))) {
-                        ParseDBFile db = new ParseDBFile(Server.getBDName(dbList, querySplit[1]));
+                        ParseDBFile db = new ParseDBFile(Server.getvalue(Server.configFile.getdbList(), querySplit[1]));
                         db.parseFile();
-                        if (Integer.parseInt(querySplit[4]) < db.toInt(db.getSOASERIAL())) {
+                        WriteLog writeLog = new WriteLog(Server.getvalue(Server.configFile.getlogFile(), db.getDef()));
+                        String date = Server.sdf.format(new Date());
+                        writeLog.write(date + " EV @ conf-file-read " + db.getPathFile());
+                        writeLog = new WriteLog(Server.getvalue(Server.configFile.getlogFile(), "all"));
+                        date = Server.sdf.format(new Date());
+                        writeLog.write(date + " EV @ conf-file-read " + db.getPathFile());
+                        if (Integer.parseInt(querySplit[4]) < toInt(db.getSOASERIAL())) {
                             query = "SOA entries: " + db.getNumOfEntries();
                             System.out.println(query);
                             PrintWriter out = new PrintWriter(client.getOutputStream(), true);
@@ -44,6 +49,12 @@ public class PrimaryServer implements Runnable {
                             query = in.readLine();
                             System.out.println(query);
                             if (query.equals("OK: " + db.getNumOfEntries())) {
+                                writeLog = new WriteLog(Server.getvalue(Server.configFile.getlogFile(), querySplit[1]));
+                                date = Server.sdf.format(new Date());
+                                writeLog.write(date + " ZT " + querySplit[2] + " SP " + db.getPathFile());
+                                writeLog = new WriteLog(Server.getvalue(Server.configFile.getlogFile(), "all"));
+                                date = Server.sdf.format(new Date());
+                                writeLog.write(date + " ZT " + querySplit[2] + " SP " + db.getPathFile());
                                 int i = 1;
                                 for (String entry : db.getEntries()) {
                                     query = i + ": " + entry;

@@ -4,22 +4,22 @@ import java.nio.charset.StandardCharsets;
 
 class ParseDBFile{
 
-    String pathFile;
-    String name;
-    static String ttl;
-    String sp;
-    String admin;
-    String serial;
-    String refresh;
-    String retry;
-    String expire;
-    List<String> mxValues;
-    List<String> nsValues;
-    List<String> extraValues;
-    List<String> cnamevalues;
-    List<String> ptrvalues;
-    static int numOfEntries;
-    List<String> entries;
+    private String pathFile;
+    private String name;
+    private static String ttl;
+    private String sp;
+    private String admin;
+    private String serial;
+    private String refresh;
+    private String retry;
+    private String expire;
+    private List<String> mxValues;
+    private List<String> nsValues;
+    private List<String> extraValues;
+    private List<String> cnamevalues;
+    private List<String> ptrvalues;
+    private static int numOfEntries;
+    private List<String> entries;
     
     ParseDBFile(String fileName) {
         pathFile = fileName;
@@ -27,6 +27,8 @@ class ParseDBFile{
         nsValues = new ArrayList<>();
         extraValues = new ArrayList<>();
         entries = new ArrayList<>();
+        cnamevalues = new ArrayList<>();
+        ptrvalues = new ArrayList<>();
         numOfEntries = 0;
         cnamevalues = new ArrayList<>();
         ptrvalues = new ArrayList<>();
@@ -53,8 +55,7 @@ class ParseDBFile{
                         }else if(words[1].equals("PRT")){
                             ptrvalues.add(words[0] + name + " PTR " + words[2] + " " + ttl);
                         }
-
-                    }else {
+                    }else{
                         if(!words[1].equals("DEFAULT")){}
                         if(words[1].equals("MX")){
                             mxValues.add(name + " MX " + words[2] + " " + ttl);
@@ -161,7 +162,7 @@ class ParseDBFile{
         if(type.equals("DEFAULT")){
             //crete new list and add item
             List<String> list = new ArrayList<>();
-            list.add("DEFAULT example.com.");
+            list.add("DEFAULT " + name);
             return list;
         }else if(type.equals("TTL")){
             List<String> list = new ArrayList<>();
@@ -213,7 +214,7 @@ class ParseDBFile{
         return null;
     }
 
-    public static int getNumOfEntries(){
+    public int getNumOfEntries(){
         return numOfEntries;
     }
 
