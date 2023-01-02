@@ -34,8 +34,8 @@ public class DNSmessage implements Serializable {
         this.numberOfValues = numberOfValues;
         this.numberOfAuthorities = numberOfAuthorities;
         this.numberOfExtra = numberOfExtra;
-        DNSmessage.name = name;
-        DNSmessage.typeOfValue = typeOfValue;
+        this.name = name;
+        this.typeOfValue = typeOfValue;
         this.responseValue = responseValue;
         this.authoritiesValues = authoritiesValues;
         this.extraValues = extraValues;
@@ -47,8 +47,8 @@ public class DNSmessage implements Serializable {
         this.numberOfValues = 0;
         this.numberOfAuthorities = 0;
         this.numberOfExtra = 0;
-        DNSmessage.name = name;
-        DNSmessage.typeOfValue = typeOfValue;
+        this.name = name;
+        this.typeOfValue = typeOfValue;
         this.responseValue = new ArrayList<>();
         this.authoritiesValues = new ArrayList<>();
         this.extraValues = new ArrayList<>();
@@ -213,11 +213,11 @@ public class DNSmessage implements Serializable {
         return numberOfExtra;
     }
 
-    public static String getName() {
+    public String getName() {
         return name;
     }
 
-    public static String getTypeOfValue() {
+    public String getTypeOfValue() {
         return typeOfValue;
     }
 

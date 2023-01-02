@@ -25,8 +25,8 @@ public class ResponseServer implements Runnable {
                 System.out.println("[Received]: \n "+ message);
             }
             if(Server.cache.findEntry(Server.cacheList, Server.cacheList.size(), message.getName(),message.getTypeOfValue()) < Server.cacheList.size()){
-                DNSmessage response = new DNSmessage(message.getId(), message.getFlags(), message.getResponseCode(), message.getNumberOfExtra(), message.getNumberOfAuthorities(), message.getNumberOfExtra(), message.getName(), message.getTypeOfValue(), Server.cache.getAnswerList(Server.cacheList, Server.cacheList.size(), message.getName(),message.getTypeOfValue()),null , null);
                 System.out.println("entry found in cache");
+                DNSmessage response = new DNSmessage(message.getId(), message.getFlags(), message.getResponseCode(), message.getNumberOfExtra(), message.getNumberOfAuthorities(), message.getNumberOfExtra(), message.getName(), message.getTypeOfValue(), Server.cache.getAnswerList(Server.cacheList, Server.cacheList.size(), message.getName(),message.getTypeOfValue()),null , null);
                 dnsMessage = response.toByteArray();
                 System.out.println("Sending message to client");
                 InetAddress clientAddress = datagramPacket.getAddress();
