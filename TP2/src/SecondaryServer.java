@@ -68,11 +68,9 @@ public class SecondaryServer implements Runnable{
                         date = Server.sdf.format(new Date());
                         writeLog.write(date + " ZT terminada" + ipPrimary + " SP " + db.getPathFile());
                         db.rewriteFile(db.getPathFile());
+                        Server.cache.addType(Server.cacheList, db, "SP");
                         Thread thread = new Thread(removebd(db.toInt(db.getSOAEXPIRE())));
                         thread.start();
-                        Server.configFile.addDbFile(new Pair(domain,db.getPathFile()));
-                        Server.cache.registerEntry(Server.cacheList, db.getDef(),"MX",db.getMXvalues(), db.getTTL(), "SP", Server.index, Server.cache.getStatus());
-                        Server.cache.registerEntry(Server.cacheList, db.getDef(),"NS", db.getNSvalues(), db.getTTL(), "SP", Server.index, Server.cache.getStatus());
                     }
                     socket.close();
                     Thread.sleep(db.toInt(db.getSOAREFRESH()));

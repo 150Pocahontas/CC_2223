@@ -269,5 +269,10 @@ class ParseDBFile{
     public int toInt(String s){
         return Integer.parseInt(s);
     }
+    //to string DB
+    public String toString(){
+        return ("DEFAULT " + name + " " + ttl + " " + sp + " " + admin + " " + serial + " " + refresh + " " + retry + " " + expire );
+    }
+
 
 }
