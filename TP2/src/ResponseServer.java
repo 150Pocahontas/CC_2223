@@ -24,9 +24,26 @@ public class ResponseServer implements Runnable {
             else {
                 System.out.println("[Received]: \n "+ message);
             }
-            String name[] = (message.getName()).split("\\.");
+            if(Server.cache.findEntry(Server.cacheList, Server.cacheList.size(), message.getName(),message.getTypeOfValue()) < Server.cacheList.size()){
+                DNSmessage response = new DNSmessage(message.getId(), message.getFlags(), 0, 0, 0, 0, message.getName(), message.getTypeOfValue(), Server.cache.getAnswerList(Server.cacheList, Server.cacheList.size(), message.getName(),message.getTypeOfValue()), null, null);
+                dnsMessage = response.toByteArray();
+                System.out.println("Sending message to client");
+                InetAddress clientAddress = datagramPacket.getAddress();
+                int clientPort = datagramPacket.getPort();
+                datagramPacket = new DatagramPacket(dnsMessage, dnsMessage.length, clientAddress, clientPort);
+                DatagramSocket datagramSocket = new DatagramSocket(datagramPacket.getPort());
+                datagramSocket.send(datagramPacket);
+                if(Server.DEBUG){
+                    System.out.println("[Sent]: \n "+ response.toStringDebug());
+                }
+                else {
+                    System.out.println("[Sent]: \n "+ response);
+                }
+                System.out.println("Message sent to client");
+                return;
+            }
+            
             DNSmessage response = null;
-            //String dbName = name[name.length-2] + "." + name[name.length-1];
             String type = message.getTypeOfValue();
             int[] flags = new int[3];
             flags[0] = 0;
@@ -46,11 +63,8 @@ public class ResponseServer implements Runnable {
             InetAddress clientAddress = datagramPacket.getAddress();
             int clientPort = datagramPacket.getPort();
             datagramPacket = new DatagramPacket(dnsMessage, dnsMessage.length, clientAddress, clientPort);
-            System.out.println("sending 1");
             DatagramSocket datagramSocket = new DatagramSocket(datagramPacket.getPort());
-            System.out.println("sending 2");
             datagramSocket.send(datagramPacket);
-            System.out.println("sending 3");
             if(Server.DEBUG){
                 System.out.println("[Sent]: \n "+ response.toStringDebug());
             }
@@ -58,8 +72,15 @@ public class ResponseServer implements Runnable {
                 System.out.println("[Sent]: \n "+ response);
             }
             System.out.println("Message sent to client");
+             
+
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
+        
+
+        
+        
     }
 }

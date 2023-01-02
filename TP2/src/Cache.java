@@ -1,18 +1,29 @@
 import java.net.InetAddress;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Cache {
     private String name;
     private String type;
-    private InetAddress value;
+    private List<String> value;
     private String ttl;
     private String origin; // File, SP, Others
     private long timestamp; 
     private int index;
     private String status; // Free, Valid
     
+    public Cache(String status){
+        this.name = null;
+        this.type = null;
+        this.value = null;
+        this.ttl = null;
+        this.origin = null;
+        this.timestamp = 0;
+        this.index = 0;
+        this.status = null;
+    }
     // Constructor
-    public Cache(String name, String type, InetAddress value, String ttl, String origin, long timestamp, int index, String status){
+    public Cache(String name, String type, List<String> value, String ttl, String origin, long timestamp, int index, String status){
         this.name = name;
         this.type = type;
         this.value = value;
@@ -32,7 +43,7 @@ public class Cache {
         return type;
     }
 
-    public InetAddress getValue(){
+    public List<String> getValue(){
         return value;
     }
 
@@ -64,7 +75,7 @@ public class Cache {
         this.type = type;
     }
 
-    public void setValue(InetAddress value){
+    public void setValue(List<String> value){
         this.value = value;
     }
 
@@ -99,6 +110,7 @@ public class Cache {
         " Status: " + status + "\n" ; 
     }
      
+    // retorna o indice da entrada correspondentes
     public int findEntry(List<Cache> cache, int index, String name, String type){
         int i = index;
         while(i < cache.size()){
@@ -117,7 +129,7 @@ public class Cache {
         return i;
     }
        
-    public void registerEntry(List<Cache> cache, String name, String type, InetAddress value, String ttl, String origin, int index){
+    public void registerEntry(List<Cache> cache, String name, String type, List<String> value, String ttl, String origin, int index){
         int i = index;
         if(origin.equals("FILE") || origin.equals("SP")){
             while(i < cache.size()){
@@ -133,6 +145,7 @@ public class Cache {
                 }
                 i++;
             }
+            cache.get(cache.size()).setStatus("FREE");
         }else if(origin.equals("OTHERS")){
             i = findEntry(cache, index, name, type);
             if(i < cache.size()){
@@ -156,7 +169,10 @@ public class Cache {
                     i++;
                 }
             }
+            cache.get(cache.size()).setStatus("FREE");
         }
+
+        
     }
     
     public void updateCache(List<Cache> cache, String name){
@@ -167,5 +183,24 @@ public class Cache {
             }
             i++;
         }
+    }
+    
+    public void printCache(List<Cache> cache){
+        int i = 0;
+        while(i < cache.size()){
+            System.out.println(cache.get(i).toString());
+            i++;
+        }
+    }
+    public List<String> getAnswerList(ArrayList<Cache> cacheList, int size, String name2, String typeOfValue) {
+        List<String> answerList = new ArrayList<String>();
+        int i = 0;
+        while(i < cacheList.size()){
+            if(cacheList.get(i).getName().equals(name2) && cacheList.get(i).getType().equals(typeOfValue)){
+                answerList.add(cacheList.get(i).getValue().get(0));
+            }
+            i++;
+        }
+        return answerList;
     }
 }
