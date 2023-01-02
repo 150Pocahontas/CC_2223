@@ -1,8 +1,9 @@
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.net.*;
+import java.text.SimpleDateFormat;
 
 /**
  * Classe que implementa um Servidor
@@ -15,7 +16,9 @@ public class Server {
     public static int start = (int) System.currentTimeMillis();
     public static ArrayList<Cache> cacheList = new ArrayList<>();
     public static Cache cache = new Cache("FREE");
-    
+    public static DatagramSocket ds;
+    public static SimpleDateFormat sdf = new SimpleDateFormat("dd:MM:yyyy.HH:mm:ss:SSS");
+
     /**
      * Método que inicaliza o Servidor
      * @param args Argumentos
@@ -35,16 +38,22 @@ public class Server {
             index = 1;
         } 
         configFile = new ParseConfigFile(args[index]);
-        DatagramSocket ds = new DatagramSocket(8080);
+
+        for(Pair log : configFile.getlogFile()){
+            WriteLog writeLog = new WriteLog(log.getvalue());
+            String date = sdf.format(new Date());
+            writeLog.write(date + " EV @ conf-file-read " + args[index]);
+            writeLog.write(date + " EV @ log-file-create " + log.getvalue());
+        } 
+        
         for(Pair p : configFile.getdbList()){
             ParseDBFile db = new ParseDBFile(p.getvalue());
             db.parseFile();
-            Server.cache.registerEntry(Server.cacheList, db.getDef(),"MX",db.getMX(), db.getTTL(), "FILE", Server.index, Server.cache.getStatus());
-            Server.cache.registerEntry(Server.cacheList, db.getDef(),"NS", db.getNS(), db.getTTL(), "FILE", Server.index, Server.cache.getStatus());
+            Server.cache.registerEntry(Server.cacheList, db.getDef(),"MX",db.getMXvalues(), db.getTTL(), "FILE", Server.index, Server.cache.getStatus());
+            Server.cache.registerEntry(Server.cacheList, db.getDef(),"NS", db.getNSvalues(), db.getTTL(), "FILE", Server.index, Server.cache.getStatus());
         }
-        for(Pair log : configFile.getlogFile()){
-            new WriteLog(log.getdomain(), log.getvalue());
-        } 
+
+        
         for(Pair ss: configFile.getps()){
             if(ss.getvalue().matches(".+:.+")){
                 String[] ipPort = ss.getvalue().split(":");
@@ -56,8 +65,9 @@ public class Server {
                 secondaryServer.start();
             }
         }
+
         if(configFile.getss() != null){ 
-            Thread primaryServer = new Thread(new PrimaryServer(configFile.getss(),configFile.getdbList()));
+            Thread primaryServer = new Thread(new PrimaryServer(configFile.getss()));
             primaryServer.start();
         }
         System.out.println("Server is running");
@@ -65,6 +75,7 @@ public class Server {
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String query = reader.readLine();
+        ds = new DatagramSocket(8080);
         while(!query.equals("exit")){
             if(reader.readLine() != null) query = reader.readLine();
             byte[] messageReceived = new byte[DNSmessage.MAX_SIZE_MESSAGE];
@@ -75,8 +86,6 @@ public class Server {
             thread.start();
         }
 
-        
-        ds.close();
         System.out.println("Pedido de encerramento enviado\n");
         Thread.sleep(1000);
         System.exit(0);
@@ -84,8 +93,9 @@ public class Server {
     }    
     
     
-    public static String getBDName(List<Pair> dbList2, String domain){
-        for(Pair p: dbList2){
+    
+    public static String getvalue(List<Pair> list, String domain){
+        for(Pair p: list){
             if(p.getdomain().equals(domain)){
                 return p.getvalue();
             }
