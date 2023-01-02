@@ -34,11 +34,24 @@ public class DNSmessage implements Serializable {
         this.numberOfValues = numberOfValues;
         this.numberOfAuthorities = numberOfAuthorities;
         this.numberOfExtra = numberOfExtra;
-        DNSmessage.name = name;
-        DNSmessage.typeOfValue = typeOfValue;
+        this.name = name;
+        this.typeOfValue = typeOfValue;
         this.responseValue = responseValue;
         this.authoritiesValues = authoritiesValues;
         this.extraValues = extraValues;
+    }
+    public DNSmessage(String name, String typeOfValue) {
+        this.id = 0;
+        this.flags = new int[]{0, 0, 0};
+        this.responseCode = 0;
+        this.numberOfValues = 0;
+        this.numberOfAuthorities = 0;
+        this.numberOfExtra = 0;
+        this.name = name;
+        this.typeOfValue = typeOfValue;
+        this.responseValue = new ArrayList<>();
+        this.authoritiesValues = new ArrayList<>();
+        this.extraValues = new ArrayList<>();
     }
 
     //Método que transforma um dns message num array de bytes encriptado

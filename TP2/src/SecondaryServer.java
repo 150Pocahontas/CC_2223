@@ -1,5 +1,6 @@
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
 
 public class SecondaryServer implements Runnable{
     private String domain;
@@ -59,6 +60,9 @@ public class SecondaryServer implements Runnable{
                         Thread thread = new Thread(removebd(db.getSOAEXPIRE()));
                         thread.start();
                         Server.configFile.addDbFile(new Pair(domain,db.getPathFile()));
+                        Server.cache.registerEntry(Server.cacheList, db.getDef(),"MX",db.getMX(), db.getTTL(), "SP", Server.index, Server.cache.getStatus());
+                        Server.cache.registerEntry(Server.cacheList, db.getDef(),"NS", db.getNS(), db.getTTL(), "SP", Server.index, Server.cache.getStatus());
+                
                     }
                     socket.close();
                 } catch (Exception e) {
