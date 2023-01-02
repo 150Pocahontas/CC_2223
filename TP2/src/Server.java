@@ -49,8 +49,7 @@ public class Server {
         for(Pair p : configFile.getdbList()){
             ParseDBFile db = new ParseDBFile(p.getvalue());
             db.parseFile();
-            Server.cache.registerEntry(Server.cacheList, db.getDef(),"MX",db.getMXvalues(), db.getTTL(), "FILE", Server.index, Server.cache.getStatus());
-            Server.cache.registerEntry(Server.cacheList, db.getDef(),"NS", db.getNSvalues(), db.getTTL(), "FILE", Server.index, Server.cache.getStatus());
+            cache.addType(cacheList, db);
         }
 
         
@@ -75,7 +74,6 @@ public class Server {
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String query = reader.readLine();
-        ds = new DatagramSocket(8080);
         while(!query.equals("exit")){
             if(reader.readLine() != null) query = reader.readLine();
             byte[] messageReceived = new byte[DNSmessage.MAX_SIZE_MESSAGE];
