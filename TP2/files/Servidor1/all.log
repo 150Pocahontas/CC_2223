@@ -1,5 +1,7 @@
-
-21:01:2023.23:41:05:450 EV @ conf-file-read ../files/Servidor1/configureFile
-21:01:2023.23:41:05:450 EV @ log-file-create ../files/Servidor1/all.log
-22:01:2023.12:48:52:948 EV @ conf-file-read ../files/Servidor1/configureFile
-22:01:2023.12:48:52:948 EV @ log-file-create ../files/Servidor1/all.log
+22:01:2023.21:34:38:022 EV @ conf-file-read ../files/Servidor1/configureFile
+22:01:2023.21:34:38:022 EV @ log-file-create ../files/Servidor1/all.log
+22:01:2023.21:36:15:616 EV @ conf-file-read ../files/Servidor1/configureFile
+22:01:2023.21:36:15:616 EV @ log-file-create ../files/Servidor1/all.log
+22:01:2023.21:36:15:681 EV @ db-file-read ../files/Servidor1/example.poca.db
+22:01:2023.21:36:19:471 QR /192.168.1.125 23075,Q+A,0,0,0,0,example.com,MX
+22:01:2023.21:36:19:471 QR  23075,Q+A,0,0,0,0,example.com,MX

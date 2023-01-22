@@ -1,6 +1,6 @@
-# Configuration file for primary server for example.com
-example.com SP 10.2.2.1
-example.com DD 127.0.0.1
-example.com LG /var/dns/example-com.log
-all LG /var/dns/all.log
-root ST /var/dns/rootservers.db
+# Configuration file for secondary server 
+example.poca SP 10.2.2.1
+example.siri SP 10.3.3.1
+all LG ../files/Servidor2/all.log
+example.poca. LG ../files/Servidor2/example.poca.log
+example.siri. LG ../files/Servidor2/example.siri.log

@@ -1,3 +1,3 @@
 # Configuration file for secondary server
-all LG /var/dns/all.log
+all LG ../files/Resolver/all.log
 root ST ../files/Resolver/rootservers.db

@@ -6,9 +6,5 @@ TTL DEFAULT 86400
 @ SOAREFRESH 14400 TTL
 @ SOARETRY 3600 TTL
 @ SOAEXPIRE 604800 TTL
-@ NS ns1.example.poca. TTL
-@ NS ns2.example.poca. TTL
-@ NS ns3.example.poca. TTL
+@ NS ns1.poca. TTL
 ns1 A 10.3.3.3 TTL
-ns2 A 10.3.3.3 TTL
-ns3 A 10.3.3.3 TTL

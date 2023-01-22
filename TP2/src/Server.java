@@ -47,13 +47,13 @@ public class Server {
             writeLog.write(date + " EV @ conf-file-read " + args[index]);
             writeLog.write(date + " EV @ log-file-create " + log.getvalue());
         } 
-        
         if(configFile.getdbList() == null){
             type = "SR";
         }else{
             for(Pair p : configFile.getdbList()){
                 ParseDBFile db = new ParseDBFile(p.getvalue());
                 db.parseFile();
+                //System.out.println(Server.getvalue(Server.configFile.getlogFile(), db.getDef()));
                 WriteLog writeLog = new WriteLog(Server.getvalue(Server.configFile.getlogFile(), db.getDef()));
                 String date = Server.sdf.format(new Date());
                 writeLog.write(date + " EV @ db-file-read " + db.getPathFile());
@@ -63,7 +63,6 @@ public class Server {
                 cache.addType(cacheList, db, "FILE");
             }    
         }
-
         if(configFile.getps() != null ){
             type = "SP";
             for(Pair ss: configFile.getps()){
@@ -88,6 +87,7 @@ public class Server {
             byte[] messageReceived = new byte[DNSmessage.MAX_SIZE_MESSAGE];
             DatagramPacket datagramPacket = new DatagramPacket(messageReceived, messageReceived.length);
             System.out.println("Waiting for a socket");
+            ds = new DatagramSocket(8080);
             ds.receive(datagramPacket);
             Thread thread = new Thread(new ResponseServer(datagramPacket, messageReceived ,configFile.getdbList()));
             thread.start();
@@ -109,6 +109,7 @@ public class Server {
     
     public static String getvalue(List<Pair> list, String domain){
         for(Pair p: list){
+            //System.out.println(p.getdomain() + " " + domain);
             if(p.getdomain().equals(domain)){
                 return p.getvalue();
             }

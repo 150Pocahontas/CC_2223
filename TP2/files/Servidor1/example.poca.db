@@ -1,0 +1,30 @@
+# DNS database file for domain example.poca
+# It also includes a pointer to the primary server
+# of the smaller.example.poca subdomain
+@ DEFAULT example.poca.
+TTL DEFAULT 86400
+@ SOASP ns1.example.poca. TTL
+@ SOAADMIN dns\.admin.example.poca. TTL
+@ SOASERIAL 0117102022 TTL
+@ SOAREFRESH 14400 TTL
+@ SOARETRY 3600 TTL
+@ SOAEXPIRE 604800 TTL
+@ NS ns1.example.poca. TTL
+@ NS ns2.example.poca. TTL
+@ NS ns3.example.poca. TTL
+Smaller.@ NS sp.smaller.example.poca.
+@ MX mx1.example.poca TTL 10
+@ MX mx2.example.poca TTL 20
+ns1 A 10.2.2.1 TTL
+ns2 A 10.2.2.2 TTL
+ns3 A 10.3.3.1 TTL
+sp.smaller A 193.140.90.11 TTL
+mx1 A 10.2.2.4 TTL
+mx2 A 10.2.2.5 TTL
+www A 10.2.2.8 TTL 200
+www A 10.3.3.9 TTL 200
+ftp A 10.3.3.10 TTL
+sp CNAME ns1 TTL
+ss1 CNAME ns2 TTL
+mail1 CNAME mx1 TTL
+mail2 CNAME mx2 TTL 

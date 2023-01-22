@@ -1,0 +1,28 @@
+# DNS database file for domain example.siri
+# It also includes a pointer to the primary server
+# of the smaller.example.siri subdomain
+@ DEFAULT example.siri.
+TTL DEFAULT 86400
+@ SOASP ns1.example.siri. TTL
+@ SOAADMIN dns\.admin.example.siri. TTL
+@ SOASERIAL 0117102022 TTL
+@ SOAREFRESH 14400 TTL
+@ SOARETRY 3600 TTL
+@ SOAEXPIRE 604800 TTL
+@ NS ns1.example.siri. TTL
+@ NS ns2.example.siri. TTL
+Smaller.@ NS sp.smaller.example.siri.
+@ MX mx1.example.siri TTL 10
+@ MX mx2.example.siri TTL 20
+ns1 A 10.3.3.1 TTL
+ns2 A 10.2.2.2 TTL
+sp.smaller A 193.140.90.11 TTL
+mx1 A 10.3.3.4 TTL
+mx2 A 10.2.2.4 TTL
+www A 10.3.3.8 TTL 200
+www A 10.3.3.9 TTL 200
+ftp A 10.3.3.10 TTL
+sp CNAME ns1 TTL
+ss1 CNAME ns2 TTL
+mail1 CNAME mx1 TTL
+mail2 CNAME mx2 TTL 

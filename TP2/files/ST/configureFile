@@ -1,4 +1,6 @@
 # Configuration file for root server
-.com DB ../files/ST/.com.bd
-all LG /var/dns/all.log
-root ST /var/dns/rootservers.db
+.siri DB ../files/ST/siri.db
+.poca DB ../files/ST/poca.db
+.siri. LG ../files/ST/siri.log
+.poca. LG ../files/ST/poca.log
+all LG ../files/ST/all.log

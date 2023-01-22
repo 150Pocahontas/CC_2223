@@ -1,7 +1,6 @@
 # Configuration file for primary server for pl602.us_10..3.3.1
-example.com DB ../files/SPandSS/pl602.us_10..3.3.1.bd
-#tem copia do example.com
-example.com SP 10.2.2.1
-example.com DD 127.0.0.1
-all LG ../files/SPandSS/all.log
-root ST ../files/SPandSS/rootservers.db
+example.siri DB ../files/Orca/example.siri.bd
+example.poca SP 10.2.2.1
+example.siri SS 10.2.2.2
+all LG ../files/Orca/all.log
+example.siri. LG ../files/Orca/example.siri.log

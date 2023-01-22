@@ -53,6 +53,7 @@ class ParseConfigFile{
         String line = reader.readLine();
         while(line != null){
             String[] words = line.split(" ");
+            System.out.println();
             if(words[1].equals("DB")){
                 dbFile.add(new Pair(words[0], words[2]));
             }else if(words[1].equals("SP")){ // então é servidor secundario par5a esses dominios

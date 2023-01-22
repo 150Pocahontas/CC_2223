@@ -1,0 +1,5 @@
+22:01:2023.21:34:38:041 EV @ conf-file-read ../files/Servidor1/configureFile
+22:01:2023.21:34:38:041 EV @ log-file-create ../files/Servidor1/example.poca.log
+22:01:2023.21:36:15:634 EV @ conf-file-read ../files/Servidor1/configureFile
+22:01:2023.21:36:15:634 EV @ log-file-create ../files/Servidor1/example.poca.log
+22:01:2023.21:36:15:680 EV @ db-file-read ../files/Servidor1/example.poca.db
