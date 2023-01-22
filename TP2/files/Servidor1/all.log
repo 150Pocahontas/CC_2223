@@ -1,0 +1,5 @@
+
+21:01:2023.23:41:05:450 EV @ conf-file-read ../files/Servidor1/configureFile
+21:01:2023.23:41:05:450 EV @ log-file-create ../files/Servidor1/all.log
+22:01:2023.12:48:52:948 EV @ conf-file-read ../files/Servidor1/configureFile
+22:01:2023.12:48:52:948 EV @ log-file-create ../files/Servidor1/all.log

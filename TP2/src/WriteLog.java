@@ -7,6 +7,7 @@ class WriteLog{
     private final String name;
     private final ReentrantLock lock = new ReentrantLock();
     public WriteLog(String name){
+        System.out.println("lol");
         File file = new File(name);
         if(!file.exists()) 
             file.delete();

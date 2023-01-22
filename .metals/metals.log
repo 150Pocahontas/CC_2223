@@ -1,0 +1,26 @@
+2023.01.21 21:01:16 INFO  tracing is disabled for protocol LSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /Users/meriam-mariakhamassi/Desktop/CC/CC_2223/.metals/lsp.trace.json or /Users/meriam-mariakhamassi/Library/Caches/org.scalameta.metals/lsp.trace.json
+2023.01.21 21:01:18 INFO  logging to file /Users/meriam-mariakhamassi/Desktop/CC/CC_2223/.metals/metals.log
+2023.01.21 21:01:18 INFO  Started: Metals version 0.11.10+31-181ba661-SNAPSHOT in workspace '/Users/meriam-mariakhamassi/Desktop/CC/CC_2223' for client Visual Studio Code 1.74.3.
+SLF4J: No SLF4J providers were found.
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See https://www.slf4j.org/codes.html#noProviders for further details.
+SLF4J: Class path contains SLF4J bindings targeting slf4j-api versions 1.7.x or earlier.
+SLF4J: Ignoring binding found at [jar:file:/Users/meriam-mariakhamassi/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/outr/scribe-slf4j_2.13/3.10.6/scribe-slf4j_2.13-3.10.6.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See https://www.slf4j.org/codes.html#ignoredBindings for an explanation.
+2023.01.21 21:01:18 INFO  time: initialize in 0.69s
+2023.01.21 21:01:23 WARN  Build server is not auto-connectable.
+2023.01.21 21:01:23 WARN  no build tool detected in workspace '/Users/meriam-mariakhamassi/Desktop/CC/CC_2223'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
+2023.01.21 21:01:23 WARN  no build target for: /Users/meriam-mariakhamassi/Desktop/CC/CC_2223/TP2/src/Client.java
+2023.01.21 21:01:24 INFO  time: code lens generation in 1.65s
+2023.01.21 21:01:32 WARN  no build target for: /Users/meriam-mariakhamassi/Desktop/CC/CC_2223/TP2/src/ResponseServer.java
+2023.01.21 21:01:34 INFO  time: code lens generation in 1.6s
+2023.01.21 21:02:19 WARN  no build target for: /Users/meriam-mariakhamassi/Desktop/CC/CC_2223/TP2/src/Server.java
+2023.01.21 21:02:20 INFO  time: code lens generation in 1.51s
+2023.01.21 23:34:38 WARN  no build target for: /Users/meriam-mariakhamassi/Desktop/CC/CC_2223/TP2/src/WriteLog.java
+2023.01.21 23:34:39 INFO  time: code lens generation in 1.2s
+2023.01.21 23:35:03 WARN  no build target for: /Users/meriam-mariakhamassi/Desktop/CC/CC_2223/TP2/src/PrimaryServer.java
+2023.01.21 23:35:05 INFO  time: code lens generation in 1.78s
+2023.01.21 23:35:45 WARN  no build target for: /Users/meriam-mariakhamassi/Desktop/CC/CC_2223/TP2/src/WriteLog.java
+2023.01.21 23:35:58 WARN  no build target for: /Users/meriam-mariakhamassi/Desktop/CC/CC_2223/TP2/src/WriteLog.java
+2023.01.21 23:38:50 WARN  no build target for: /Users/meriam-mariakhamassi/Desktop/CC/CC_2223/TP2/src/ParseConfigFile.java
+2023.01.21 23:38:52 INFO  time: code lens generation in 1.37s
