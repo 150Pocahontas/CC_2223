@@ -31,7 +31,7 @@ class Client{
             if(DEBUG){
                 System.out.println("[Sent]: \n "+ message.toStringDebug());
             }
-            else {
+            else{
                 System.out.println("[Sent]: \n "+ message);
             }
             //receive message from server 

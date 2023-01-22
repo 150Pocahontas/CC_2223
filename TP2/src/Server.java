@@ -47,13 +47,13 @@ public class Server {
             writeLog.write(date + " EV @ conf-file-read " + args[index]);
             writeLog.write(date + " EV @ log-file-create " + log.getvalue());
         } 
-        if(configFile.getdbList() == null){
+
+        if(configFile.getdbList().isEmpty()){
             type = "SR";
         }else{
             for(Pair p : configFile.getdbList()){
                 ParseDBFile db = new ParseDBFile(p.getvalue());
                 db.parseFile();
-                //System.out.println(Server.getvalue(Server.configFile.getlogFile(), db.getDef()));
                 WriteLog writeLog = new WriteLog(Server.getvalue(Server.configFile.getlogFile(), db.getDef()));
                 String date = Server.sdf.format(new Date());
                 writeLog.write(date + " EV @ db-file-read " + db.getPathFile());
@@ -63,7 +63,8 @@ public class Server {
                 cache.addType(cacheList, db, "FILE");
             }    
         }
-        if(configFile.getps() != null ){
+
+        if(!configFile.getps().isEmpty()){
             type = "SP";
             for(Pair ss: configFile.getps()){
                 if(ss.getvalue().matches(".+:.+")){
@@ -78,20 +79,22 @@ public class Server {
             }
         }
 
-        if(configFile.getss() != null){ 
+        if(!configFile.getss().isEmpty()){ 
             Thread primaryServer = new Thread(new PrimaryServer(configFile.getss()));
             primaryServer.start();
             type = "SP";
         }
+
+        ds = new DatagramSocket(8080);
         while(!EXIT){
             byte[] messageReceived = new byte[DNSmessage.MAX_SIZE_MESSAGE];
             DatagramPacket datagramPacket = new DatagramPacket(messageReceived, messageReceived.length);
             System.out.println("Waiting for a socket");
-            ds = new DatagramSocket(8080);
             ds.receive(datagramPacket);
             Thread thread = new Thread(new ResponseServer(datagramPacket, messageReceived ,configFile.getdbList()));
             thread.start();
         }
+
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String query = reader.readLine();
 
@@ -103,18 +106,14 @@ public class Server {
         Thread.sleep(1000);
         System.exit(0);
         
-    }    
-    
-    
+    }     
     
     public static String getvalue(List<Pair> list, String domain){
         for(Pair p: list){
-            //System.out.println(p.getdomain() + " " + domain);
             if(p.getdomain().equals(domain)){
                 return p.getvalue();
             }
         }
         return null;
-    }
-    
+    }   
 }

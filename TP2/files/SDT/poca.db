@@ -11,4 +11,7 @@ TTL DEFAULT 86400
 @ NS ns3.poca. TTL
 ns1 A 10.2.2.1 TTL
 ns2 A 10.2.2.2 TTL
-ns3 A 10.3.3.1 TTL
+ns3 A 10.3.3.1 TTL22:01:2023.22:04:36:236 EV @ conf-file-read ../files/SDT/configureFile
+22:01:2023.22:04:36:236 EV @ log-file-create ../files/SDT/poca.db
+22:01:2023.22:04:36:259 EV @ db-file-read ../files/SDT/siri.db
+22:01:2023.22:04:36:262 EV @ db-file-read ../files/SDT/poca.db

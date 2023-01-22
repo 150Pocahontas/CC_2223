@@ -128,7 +128,7 @@ public class Cache {
                 }
             }
         }
-        return -1;
+        return 0;
     }
        
     public void registerEntry(List<Cache> cache, String name, String type, List<String> value, String ttl, String origin, int index, String status){
@@ -176,9 +176,9 @@ public class Cache {
 
     public void addType(List<Cache> cache, ParseDBFile bd, String origins){
         int index = 0;
-        
-        String[] split = bd.getDef().split("\\.");
-        String name = split[0]+ "." + split[1];
+
+        String[] split = bd.getDef().split("\\. ");
+        String name = split[0];
         String ttl = bd.getTTL();
         String status = "VALID";
         if(name!= null){

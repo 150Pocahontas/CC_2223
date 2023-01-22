@@ -1,0 +1,28 @@
+22:01:2023.22:41:20:221 EV @ conf-file-read ../files/Resolver/configureFile
+22:01:2023.22:41:20:221 EV @ log-file-create ../files/Resolver/all.log
+22:01:2023.22:41:23:537 QR /10.1.1.1 42759,Q+A,0,0,0,0,example.poc,MX
+22:01:2023.22:41:23:537 QR  42759,Q+A,0,0,0,0,example.poc,MX
+22:01:2023.22:42:34:169 EV @ conf-file-read ../files/Resolver/configureFile
+22:01:2023.22:42:34:169 EV @ log-file-create ../files/Resolver/all.log
+22:01:2023.22:42:35:999 QR /10.1.1.1 60432,Q+A,0,0,0,0,example.poc,MX
+22:01:2023.22:42:35:999 QR  60432,Q+A,0,0,0,0,example.poc,MX
+22:01:2023.22:49:51:300 EV @ conf-file-read ../files/Resolver/configureFile
+22:01:2023.22:49:51:300 EV @ log-file-create ../files/Resolver/all.log
+22:01:2023.22:49:53:518 QR /10.1.1.1 59452,Q+A,0,0,0,0,example.poc,MX
+22:01:2023.22:49:53:518 QR  59452,Q+A,0,0,0,0,example.poc,MX
+22:01:2023.23:01:54:102 EV @ conf-file-read ../files/Resolver/configureFile
+22:01:2023.23:01:54:102 EV @ log-file-create ../files/Resolver/all.log
+22:01:2023.23:01:56:337 QR /10.1.1.1 32512,Q+A,0,0,0,0,example.poc,MX
+22:01:2023.23:01:56:337 QR  32512,Q+A,0,0,0,0,example.poc,MX
+22:01:2023.23:02:11:405 EV @ conf-file-read ../files/Resolver/configureFile
+22:01:2023.23:02:11:405 EV @ log-file-create ../files/Resolver/all.log
+22:01:2023.23:02:13:539 QR /10.1.1.1 29721,Q+A,0,0,0,0,example.poc,MX
+22:01:2023.23:02:13:539 QR  29721,Q+A,0,0,0,0,example.poc,MX
+22:01:2023.23:03:15:619 EV @ conf-file-read ../files/Resolver/configureFile
+22:01:2023.23:03:15:619 EV @ log-file-create ../files/Resolver/all.log
+22:01:2023.23:03:18:426 QR /10.1.1.1 11011,Q+A,0,0,0,0,example.poc,MX
+22:01:2023.23:03:18:426 QR  11011,Q+A,0,0,0,0,example.poc,MX
+22:01:2023.23:21:52:466 EV @ conf-file-read ../files/Resolver/configureFile
+22:01:2023.23:21:52:466 EV @ log-file-create ../files/Resolver/all.log
+22:01:2023.23:21:58:674 QR /10.1.1.1 60024,Q+A,0,0,0,0,example.poc,MX
+22:01:2023.23:21:58:674 QR  60024,Q+A,0,0,0,0,example.poc,MX

@@ -1,6 +1,6 @@
 # Configuration file for sdt
 .siri DB ../files/SDT/siri.db
 .poca DB ../files/SDT/poca.db
-.siri. LG ../files/SDT/siri.db
-.poca. LG ../files/SDT/poca.db
+siri. LG ../files/SDT/siri.db
+poca. LG ../files/SDT/poca.db
 all LG ../files/SDT/all.log

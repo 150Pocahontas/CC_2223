@@ -1,0 +1,44 @@
+22:01:2023.21:46:51:982 EV @ conf-file-read ../files/ST/configureFile
+22:01:2023.21:46:51:982 EV @ log-file-create ../files/ST/all.log
+22:01:2023.21:50:07:515 EV @ conf-file-read ../files/ST/configureFile
+22:01:2023.21:50:07:515 EV @ log-file-create ../files/ST/all.log
+22:01:2023.21:54:54:661 EV @ conf-file-read ../files/ST/configureFile
+22:01:2023.21:54:54:661 EV @ log-file-create ../files/ST/all.log
+22:01:2023.21:55:53:862 EV @ conf-file-read ../files/ST/configureFile
+22:01:2023.21:55:53:862 EV @ log-file-create ../files/ST/all.log
+22:01:2023.21:55:53:897 EV @ db-file-read ../files/ST/siri.db
+22:01:2023.21:56:27:817 EV @ conf-file-read ../files/ST/configureFile
+22:01:2023.21:56:27:817 EV @ log-file-create ../files/ST/all.log
+22:01:2023.21:56:27:871 EV @ db-file-read ../files/ST/siri.db
+22:01:2023.21:59:29:581 EV @ conf-file-read ../files/ST/configureFile
+22:01:2023.21:59:29:581 EV @ log-file-create ../files/ST/all.log
+22:01:2023.21:59:29:612 EV @ db-file-read ../files/ST/siri.db
+22:01:2023.22:00:27:534 EV @ conf-file-read ../files/ST/configureFile
+22:01:2023.22:00:27:534 EV @ log-file-create ../files/ST/all.log
+22:01:2023.22:00:27:563 EV @ db-file-read ../files/ST/siri.db
+22:01:2023.22:02:39:760 EV @ conf-file-read ../files/ST/configureFile
+22:01:2023.22:02:39:760 EV @ log-file-create ../files/ST/all.log
+22:01:2023.22:02:39:810 EV @ db-file-read ../files/ST/siri.db
+22:01:2023.22:02:39:818 EV @ db-file-read ../files/ST/poca.db
+22:01:2023.22:03:46:317 EV @ conf-file-read ../files/ST/configureFile
+22:01:2023.22:03:46:317 EV @ log-file-create ../files/ST/all.log
+22:01:2023.22:03:46:340 EV @ db-file-read ../files/ST/siri.db
+22:01:2023.22:03:46:344 EV @ db-file-read ../files/ST/poca.db
+22:01:2023.22:49:53:622 QR /10.2.2.3 59452,Q+A,0,0,0,0,example.poc,MX
+22:01:2023.22:49:53:622 QR  59452,Q+A,0,0,0,0,example.poc,MX
+22:01:2023.23:02:08:710 EV @ conf-file-read ../files/ST/configureFile
+22:01:2023.23:02:08:710 EV @ log-file-create ../files/ST/all.log
+22:01:2023.23:02:08:740 EV @ db-file-read ../files/ST/siri.db
+22:01:2023.23:02:08:744 EV @ db-file-read ../files/ST/poca.db
+22:01:2023.23:02:13:643 QR /10.2.2.3 29721,Q+A,0,0,0,0,example.poc,MX
+22:01:2023.23:02:13:643 QR  29721,Q+A,0,0,0,0,example.poc,MX
+22:01:2023.23:03:09:632 EV @ conf-file-read ../files/ST/configureFile
+22:01:2023.23:03:09:632 EV @ log-file-create ../files/ST/all.log
+22:01:2023.23:03:09:662 EV @ db-file-read ../files/ST/siri.db
+22:01:2023.23:03:09:665 EV @ db-file-read ../files/ST/poca.db
+22:01:2023.23:03:18:522 QR /10.2.2.3 11011,Q+A,0,0,0,0,example.poc,MX
+22:01:2023.23:03:18:522 QR  11011,Q+A,0,0,0,0,example.poc,MX
+22:01:2023.23:21:55:818 EV @ conf-file-read ../files/ST/configureFile
+22:01:2023.23:21:55:818 EV @ log-file-create ../files/ST/all.log
+22:01:2023.23:21:55:852 EV @ db-file-read ../files/ST/siri.db
+22:01:2023.23:21:55:856 EV @ db-file-read ../files/ST/poca.db

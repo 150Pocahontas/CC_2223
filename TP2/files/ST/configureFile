@@ -1,6 +1,6 @@
 # Configuration file for root server
 .siri DB ../files/ST/siri.db
 .poca DB ../files/ST/poca.db
-.siri. LG ../files/ST/siri.log
-.poca. LG ../files/ST/poca.log
+siri. LG ../files/ST/siri.log
+poca. LG ../files/ST/poca.log
 all LG ../files/ST/all.log

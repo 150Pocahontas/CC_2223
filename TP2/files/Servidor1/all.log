@@ -5,3 +5,6 @@
 22:01:2023.21:36:15:681 EV @ db-file-read ../files/Servidor1/example.poca.db
 22:01:2023.21:36:19:471 QR /192.168.1.125 23075,Q+A,0,0,0,0,example.com,MX
 22:01:2023.21:36:19:471 QR  23075,Q+A,0,0,0,0,example.com,MX
+22:01:2023.22:06:10:150 EV @ conf-file-read ../files/Servidor1/configureFile
+22:01:2023.22:06:10:150 EV @ log-file-create ../files/Servidor1/all.log
+22:01:2023.22:06:10:202 EV @ db-file-read ../files/Servidor1/example.poca.db

@@ -9,4 +9,5 @@ TTL DEFAULT 86400
 @ NS ns1.siri. TTL
 @ NS ns2.siri. TTL
 ns1 A 10.3.3.1 TTL
-ns2 A 10.2.2.2 TTL
+ns2 A 10.2.2.2 TTL22:01:2023.22:04:36:212 EV @ conf-file-read ../files/SDT/configureFile
+22:01:2023.22:04:36:212 EV @ log-file-create ../files/SDT/siri.db

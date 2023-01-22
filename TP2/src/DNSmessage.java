@@ -6,6 +6,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.*;
 
+
 public class DNSmessage implements Serializable {
     public static final int MAX_SIZE_DATA = 1028;
     public static final int MAX_SIZE_MESSAGE = MAX_SIZE_DATA + 32;
@@ -20,8 +21,8 @@ public class DNSmessage implements Serializable {
     private final int numberOfExtra;
     //Data Fields
     // -> 2 Campos Query Info
-    private static String name;
-    private static String typeOfValue;
+    private String name;
+    private String typeOfValue;
 
     private List<String> responseValue;
     private List<String> authoritiesValues;
@@ -219,6 +220,18 @@ public class DNSmessage implements Serializable {
 
     public String getTypeOfValue() {
         return typeOfValue;
+    }
+
+    public ArrayList<String> getResponseValue() {
+        return (ArrayList<String>) responseValue;
+    }
+
+    public ArrayList<String> getAuthoritiesValues() {
+        return (ArrayList<String>) authoritiesValues;
+    }
+
+    public ArrayList<String> getExtraValues() {
+        return (ArrayList<String>) extraValues;
     }
 
     private String[] flagToS(){

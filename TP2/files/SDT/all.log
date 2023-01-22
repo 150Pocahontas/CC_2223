@@ -1,0 +1,4 @@
+22:01:2023.22:04:36:236 EV @ conf-file-read ../files/SDT/configureFile
+22:01:2023.22:04:36:236 EV @ log-file-create ../files/SDT/all.log
+22:01:2023.22:04:36:260 EV @ db-file-read ../files/SDT/siri.db
+22:01:2023.22:04:36:262 EV @ db-file-read ../files/SDT/poca.db
