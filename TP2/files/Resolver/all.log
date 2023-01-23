@@ -26,3 +26,11 @@
 22:01:2023.23:21:52:466 EV @ log-file-create ../files/Resolver/all.log
 22:01:2023.23:21:58:674 QR /10.1.1.1 60024,Q+A,0,0,0,0,example.poc,MX
 22:01:2023.23:21:58:674 QR  60024,Q+A,0,0,0,0,example.poc,MX
+23:01:2023.13:38:37:821 EV @ conf-file-read ../files/Resolver/configureFile
+23:01:2023.13:38:37:821 EV @ log-file-create ../files/Resolver/all.log
+23:01:2023.13:38:44:069 QR /192.168.1.125 39804,Q+A,0,0,0,0,example.com,MX
+23:01:2023.13:38:44:069 QR  39804,Q+A,0,0,0,0,example.com,MX
+23:01:2023.13:40:43:806 EV @ conf-file-read ../files/Resolver/configureFile
+23:01:2023.13:40:43:806 EV @ log-file-create ../files/Resolver/all.log
+23:01:2023.13:40:49:815 QR /192.168.1.125 61519,Q+A,0,0,0,0,example.com,MX
+23:01:2023.13:40:49:815 QR  61519,Q+A,0,0,0,0,example.com,MX

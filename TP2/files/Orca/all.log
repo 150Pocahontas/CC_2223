@@ -1,0 +1,10 @@
+23:01:2023.13:34:11:666 EV @ conf-file-read ../files/Orca/configureFile
+23:01:2023.13:34:11:666 EV @ log-file-create ../files/Orca/all.log
+23:01:2023.13:34:40:758 EV @ conf-file-read ../files/Orca/configureFile
+23:01:2023.13:34:40:758 EV @ log-file-create ../files/Orca/all.log
+23:01:2023.13:34:40:848 EV @ db-file-read ../files/Orca/example.siri.db
+23:01:2023.13:37:15:304 EV @ conf-file-read ../files/Orca/configureFile
+23:01:2023.13:37:15:304 EV @ log-file-create ../files/Orca/all.log
+23:01:2023.13:37:15:390 EV @ db-file-read ../files/Orca/example.siri.db
+23:01:2023.13:38:01:852 QR /192.168.1.125 52073,Q+A,0,0,0,0,example.com,MX
+23:01:2023.13:38:01:852 QR  52073,Q+A,0,0,0,0,example.com,MX

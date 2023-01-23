@@ -2,6 +2,9 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.net.*;
 import java.text.SimpleDateFormat;
 
@@ -26,7 +29,7 @@ public class Server {
      * @throws Exception
      */
     public static void main(String[] args) throws Exception {
-        
+        ds = new DatagramSocket(8080);
         cacheList.add(cache);
 
         if(args.length == 0){
@@ -47,13 +50,13 @@ public class Server {
             writeLog.write(date + " EV @ conf-file-read " + args[index]);
             writeLog.write(date + " EV @ log-file-create " + log.getvalue());
         } 
-
         if(configFile.getdbList().isEmpty()){
             type = "SR";
         }else{
             for(Pair p : configFile.getdbList()){
                 ParseDBFile db = new ParseDBFile(p.getvalue());
                 db.parseFile();
+                //System.out.println(Server.getvalue(Server.configFile.getlogFile(), db.getDef()));
                 WriteLog writeLog = new WriteLog(Server.getvalue(Server.configFile.getlogFile(), db.getDef()));
                 String date = Server.sdf.format(new Date());
                 writeLog.write(date + " EV @ db-file-read " + db.getPathFile());
@@ -63,8 +66,7 @@ public class Server {
                 cache.addType(cacheList, db, "FILE");
             }    
         }
-
-        if(!configFile.getps().isEmpty()){
+        if(!(configFile.getps().isEmpty())){
             type = "SP";
             for(Pair ss: configFile.getps()){
                 if(ss.getvalue().matches(".+:.+")){
@@ -79,22 +81,19 @@ public class Server {
             }
         }
 
-        if(!configFile.getss().isEmpty()){ 
+        if(!(configFile.getss().isEmpty())){ 
             Thread primaryServer = new Thread(new PrimaryServer(configFile.getss()));
             primaryServer.start();
             type = "SP";
         }
-
-        ds = new DatagramSocket(8080);
+        Executor executor = Executors.newFixedThreadPool(5); // Create a thread pool with 5 threads
         while(!EXIT){
             byte[] messageReceived = new byte[DNSmessage.MAX_SIZE_MESSAGE];
             DatagramPacket datagramPacket = new DatagramPacket(messageReceived, messageReceived.length);
             System.out.println("Waiting for a socket");
             ds.receive(datagramPacket);
-            Thread thread = new Thread(new ResponseServer(datagramPacket, messageReceived ,configFile.getdbList()));
-            thread.start();
+            executor.execute(new ResponseServer(datagramPacket, messageReceived, configFile.getdbList()));
         }
-
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String query = reader.readLine();
 
@@ -106,14 +105,18 @@ public class Server {
         Thread.sleep(1000);
         System.exit(0);
         
-    }     
+    }    
+    
+    
     
     public static String getvalue(List<Pair> list, String domain){
         for(Pair p: list){
+            //System.out.println(p.getdomain() + " " + domain);
             if(p.getdomain().equals(domain)){
                 return p.getvalue();
             }
         }
         return null;
-    }   
+    }
+    
 }

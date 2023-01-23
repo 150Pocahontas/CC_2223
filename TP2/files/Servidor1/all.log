@@ -8,3 +8,18 @@
 22:01:2023.22:06:10:150 EV @ conf-file-read ../files/Servidor1/configureFile
 22:01:2023.22:06:10:150 EV @ log-file-create ../files/Servidor1/all.log
 22:01:2023.22:06:10:202 EV @ db-file-read ../files/Servidor1/example.poca.db
+23:01:2023.12:55:52:833 EV @ conf-file-read ../files/Servidor1/configureFile
+23:01:2023.12:55:52:833 EV @ log-file-create ../files/Servidor1/all.log
+23:01:2023.12:55:52:923 EV @ db-file-read ../files/Servidor1/example.poca.db
+23:01:2023.12:55:55:928 QR /192.168.1.125 52948,Q+A,0,0,0,0,example.com,MX
+23:01:2023.12:55:55:928 QR  52948,Q+A,0,0,0,0,example.com,MX
+23:01:2023.13:41:09:805 EV @ conf-file-read ../files/Servidor1/configureFile
+23:01:2023.13:41:09:805 EV @ log-file-create ../files/Servidor1/all.log
+23:01:2023.13:41:09:888 EV @ db-file-read ../files/Servidor1/example.poca.db
+23:01:2023.13:41:11:619 QR /192.168.1.125 21568,Q+A,0,0,0,0,example.com,MX
+23:01:2023.13:41:11:619 QR  21568,Q+A,0,0,0,0,example.com,MX
+23:01:2023.13:48:05:673 EV @ conf-file-read ../files/Servidor1/configureFile
+23:01:2023.13:48:05:673 EV @ log-file-create ../files/Servidor1/all.log
+23:01:2023.13:48:05:758 EV @ db-file-read ../files/Servidor1/example.poca.db
+23:01:2023.13:48:08:058 QR /192.168.1.125 57353,Q+A,0,0,0,0,example.com,MX
+23:01:2023.13:48:08:058 QR  57353,Q+A,0,0,0,0,example.com,MX

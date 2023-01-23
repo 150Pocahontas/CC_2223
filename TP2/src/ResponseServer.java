@@ -26,7 +26,7 @@ public class ResponseServer implements Runnable {
                 date = Server.sdf.format(new Date());
             }
             writeLog.write(date + " QR  " + message.toStringDebug());
-            if(Server.type == "SR" || Server.type == "SP"){
+            if((Server.type).equals("SR") || (Server.type).equals("SP") ){
                 //vê na cahe não tem contacta 
                 if(Server.cache.findEntry(Server.cacheList, message.getName(),message.getTypeOfValue()) > 0){
                     Cache c = Server.cacheList.get(Server.cache.findEntry(Server.cacheList, message.getName(),message.getTypeOfValue()));
@@ -51,7 +51,7 @@ public class ResponseServer implements Runnable {
                     else {
                         System.out.println("[Sent]: \n "+ message);
                     }
-                }else if(Server.type == "SR"){
+                }else if((Server.type).equals("SR") ){
                     BufferedReader reader;
                     reader = new BufferedReader(new FileReader(Server.configFile.getrootFile()));
                     String ip = reader.readLine();
@@ -115,7 +115,7 @@ public class ResponseServer implements Runnable {
                     }catch (Exception e) {
                         System.out.println("Error: " + e.getMessage());
                     }
-                }else if(Server.type == "SP"){
+                }else if((Server.type).equals("SP") ){
                     int[] flags = new int[3];
                     flags[0] = 0;
                     flags[1] = message.getFlags()[1];
@@ -140,7 +140,7 @@ public class ResponseServer implements Runnable {
                         System.out.println("[Sent]: \n "+ message);
                     }
                 }
-            }else if(Server.type == "OTHER"){
+            }else if((Server.type).equals("OTHER") ){
                 if(Server.cache.findEntry(Server.cacheList, message.getName(),"NS") > 0 ){
                     Cache aV = Server.cacheList.get(Server.cache.findEntry(Server.cacheList, message.getName(),"NS"));
                     Cache eXV = Server.cacheList.get(Server.cache.findEntry(Server.cacheList, message.getName(),"A"));
@@ -151,10 +151,10 @@ public class ResponseServer implements Runnable {
                     flags[2] = 0;
                     if(flags[1] == 1){
                         try (DatagramSocket clientSocket = new DatagramSocket()) {
-                            String ip = eXV.getValue().get(1).split(" ")[2];
+                            String serverIP = eXV.getValue().get(1).split(" ")[2];
                             message = new DNSmessage(message.getId(), flags, 0, 0, aV.getValue().size(), eXV.getValue().size(), message.getName(), message.getTypeOfValue(), null, aV.getValue(), eXV.getValue());
                             byte[] messageToSend = message.toByteArray();
-                            DatagramPacket dp = new DatagramPacket(messageToSend, messageToSend.length, InetAddress.getByName(ip), 8080);
+                            DatagramPacket dp = new DatagramPacket(messageToSend, messageToSend.length, InetAddress.getByName(serverIP), 8080);
                             clientSocket.send(dp);
                             if(Server.DEBUG){
                                 System.out.println("[Sent]: \n "+ message.toStringDebug());
@@ -169,22 +169,14 @@ public class ResponseServer implements Runnable {
                             if(Server.DEBUG){
                                 System.out.println("[Received]: \n "+ message.toStringDebug());
                             }
-                            else{
+                            else {
                                 System.out.println("[Received]: \n "+ message);
                             }
-                            messageToSend = message.toByteArray();
-                            datagramPacket = new DatagramPacket(messageToSend, messageToSend.length, InetAddress.getByName(ip), 8080);
-                            clientSocket.send(datagramPacket);
-                            if(Server.DEBUG){
-                                System.out.println("[Sent]: \n "+ message.toStringDebug());
-                            }else {
-                                System.out.println("[Sent]: \n "+ message);
-                            }
-                            clientSocket.close();
-                        }catch (Exception e) {
+                        } catch (Exception e) {
                             System.out.println("Error: " + e.getMessage());
                         }
-                    }else{
+                    }
+                    else{
                         InetAddress clientAddress = datagramPacket.getAddress();
                         int clientPort = datagramPacket.getPort();
                         datagramPacket = new DatagramPacket(dnsMessage, dnsMessage.length, clientAddress, clientPort);

@@ -1,5 +1,5 @@
 # Configuration file for primary server for pl602.us_10..3.3.1
-example.siri DB ../files/Orca/example.siri.bd
+example.siri DB ../files/Orca/example.siri.db
 example.poca SP 10.2.2.1
 example.siri SS 10.2.2.2
 all LG ../files/Orca/all.log

@@ -1,0 +1,8 @@
+23:01:2023.13:34:11:690 EV @ conf-file-read ../files/Orca/configureFile
+23:01:2023.13:34:11:690 EV @ log-file-create ../files/Orca/example.siri.log
+23:01:2023.13:34:40:783 EV @ conf-file-read ../files/Orca/configureFile
+23:01:2023.13:34:40:783 EV @ log-file-create ../files/Orca/example.siri.log
+23:01:2023.13:34:40:847 EV @ db-file-read ../files/Orca/example.siri.db
+23:01:2023.13:37:15:328 EV @ conf-file-read ../files/Orca/configureFile
+23:01:2023.13:37:15:328 EV @ log-file-create ../files/Orca/example.siri.log
+23:01:2023.13:37:15:389 EV @ db-file-read ../files/Orca/example.siri.db

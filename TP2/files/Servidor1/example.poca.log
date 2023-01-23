@@ -6,3 +6,12 @@
 22:01:2023.22:06:10:175 EV @ conf-file-read ../files/Servidor1/configureFile
 22:01:2023.22:06:10:175 EV @ log-file-create ../files/Servidor1/example.poca.log
 22:01:2023.22:06:10:197 EV @ db-file-read ../files/Servidor1/example.poca.db
+23:01:2023.12:55:52:857 EV @ conf-file-read ../files/Servidor1/configureFile
+23:01:2023.12:55:52:857 EV @ log-file-create ../files/Servidor1/example.poca.log
+23:01:2023.12:55:52:922 EV @ db-file-read ../files/Servidor1/example.poca.db
+23:01:2023.13:41:09:829 EV @ conf-file-read ../files/Servidor1/configureFile
+23:01:2023.13:41:09:829 EV @ log-file-create ../files/Servidor1/example.poca.log
+23:01:2023.13:41:09:887 EV @ db-file-read ../files/Servidor1/example.poca.db
+23:01:2023.13:48:05:695 EV @ conf-file-read ../files/Servidor1/configureFile
+23:01:2023.13:48:05:695 EV @ log-file-create ../files/Servidor1/example.poca.log
+23:01:2023.13:48:05:757 EV @ db-file-read ../files/Servidor1/example.poca.db
